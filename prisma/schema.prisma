@@ -1,0 +1,457 @@
+generator client {
+  provider = "prisma-client-js" // Spécifie le générateur de client Prisma
+  output   = "../lib/generated/prisma/client" // Chemin de sortie pour le client généré
+}
+
+datasource db {
+  provider = "sqlite" // Fournisseur de la base de données (SQLite)
+  url      = env("DATABASE_URL") // URL de connexion à la base, tirée des variables d'environnement
+}
+
+enum Role {
+  USER // Utilisateur standard avec droits limités
+  READER // Utilisateur avec droits de lecture uniquement
+  AUTHOR // Utilisateur pouvant créer du contenu
+  DEV // Développeur avec droits techniques
+  ADMIN // Administrateur avec tous les droits
+}
+
+enum Status {
+  TODO // Tâche/projet/sprint à faire
+  IN_PROGRESS // Tâche/projet/sprint en cours
+  REVIEW // Tâche/projet/sprint en revue
+  DONE // Tâche/projet/sprint terminé
+  BLOCKED // Tâche/projet/sprint bloqué
+  CANCELLED // Tâche/projet/sprint annulé
+}
+
+enum FileType {
+  DOCUMENT // Fichier de type document (ex. PDF, Word)
+  IMAGE // Fichier de type image (ex. JPG, PNG)
+  SPREADSHEET // Fichier de type tableur (ex. Excel)
+  PRESENTATION // Fichier de type présentation (ex. PowerPoint)
+  ARCHIVE // Fichier de type archive (ex. ZIP)
+  CODE // Fichier de type code source
+  OTHER // Autre type de fichier
+}
+
+enum ActionType {
+  CREATE // Action de création
+  UPDATE // Action de mise à jour
+  DELETE // Action de suppression
+}
+
+enum RelationType {
+  IMPORT // Importation d'un fichier (ex. import dans du code)
+  REFERENCE // Référence à un fichier (ex. lien logique)
+  OTHER // Autre type de relation
+}
+
+model User {
+  id            String   @id @default(uuid()) // Identifiant unique de l'utilisateur
+  name          String? // Nom de l'utilisateur (optionnel)
+  email         String?  @unique // Email unique de l'utilisateur (optionnel)
+  emailVerified Boolean  @default(false) // Indique si l'email est vérifié
+  image         String? // URL de l'image de profil (optionnel)
+  role          Role     @default(USER) // Rôle de l'utilisateur dans l'application
+  lang          String?  @default("en") // Langue préférée de l'utilisateur
+  createdAt     DateTime @default(now()) // Date de création du compte
+  updatedAt     DateTime @updatedAt // Date de dernière mise à jour du compte
+
+  sessions      Session[] // Sessions actives de l'utilisateur
+  accounts      Account[] // Comptes d'authentification liés
+  memberships   Member[] // Projets auxquels l'utilisateur est membre
+  verifications Verification[] // Vérifications associées à l'utilisateur
+
+  @@index([email]) // Index sur l'email pour des recherches rapides
+  @@map("user") // Nom de la table dans la base de données
+}
+
+model Session {
+  id        String   @id @default(uuid()) // Identifiant unique de la session
+  userId    String // ID de l'utilisateur associé
+  token     String   @unique // Jeton unique de la session
+  expiresAt DateTime // Date d'expiration de la session
+  ipAddress String? // Adresse IP de connexion (optionnel)
+  userAgent String? // Agent utilisateur du navigateur (optionnel)
+  createdAt DateTime @default(now()) // Date de création de la session
+  updatedAt DateTime @updatedAt // Date de dernière mise à jour de la session
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation avec l'utilisateur, suppression en cascade
+
+  @@map("session") // Nom de la table dans la base de données
+}
+
+model Account {
+  id                    String    @id @default(uuid()) // Identifiant unique du compte
+  userId                String // ID de l'utilisateur associé
+  accountId             String // ID du compte chez le fournisseur
+  providerId            String // Identifiant du fournisseur (ex. Google, GitHub)
+  accessToken           String? // Jeton d'accès OAuth (optionnel)
+  refreshToken          String? // Jeton de rafraîchissement OAuth (optionnel)
+  accessTokenExpiresAt  DateTime? // Date d'expiration du jeton d'accès
+  refreshTokenExpiresAt DateTime? // Date d'expiration du jeton de rafraîchissement
+  scope                 String? // Portée des autorisations OAuth
+  idToken               String? // Jeton d'identité OAuth
+  password              String? // Mot de passe haché (pour authentification locale)
+  createdAt             DateTime  @default(now()) // Date de création du compte
+  updatedAt             DateTime  @updatedAt // Date de dernière mise à jour du compte
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation avec l'utilisateur, suppression en cascade
+
+  @@map("account") // Nom de la table dans la base de données
+}
+
+model Verification {
+  id         String   @id @default(uuid()) // Identifiant unique de la vérification
+  identifier String // Identifiant à vérifier (ex. email)
+  value      String // Valeur de vérification (ex. token)
+  expiresAt  DateTime // Date d'expiration du token
+  createdAt  DateTime @default(now()) // Date de création de la vérification
+  updatedAt  DateTime @updatedAt // Date de dernière mise à jour de la vérification
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Utilisateur associé
+  userId String // ID de l'utilisateur
+
+  @@map("verification") // Nom de la table dans la base de données
+}
+
+model UserAggregate {
+  id String @id @default(uuid())
+
+  // User data (champs scalaires)
+  userName      String?
+  userEmail     String?  @unique
+  userImage     String?
+  userRole      Role     @default(USER)
+  userLang      String?  @default("en")
+  userCreatedAt DateTime @default(now())
+  userUpdatedAt DateTime @updatedAt
+
+  // Relations (tableaux JSON)
+  sessions         Json // Stockera Session[]
+  accounts         Json // Stockera Account[]
+  memberProjects   Json // Stockera Member[]
+  projects         Json // Stockera Project[]
+  files            Json // Stockera File[]
+  tasks            Json // Stockera Task[]
+  subtasks         Json // Stockera Subtask[]
+  comments         Json // Stockera Comment[]
+  timeLogs         Json // Stockera TimeLog[]
+  epics            Json // Stockera Epic[]
+  userStories      Json // Stockera UserStory[]
+  sprints          Json // Stockera Sprint[]
+  themas           Json // Stockera Thema[]
+  activities       Json // Stockera ActivityLog[]
+  fileDependencies Json // Stockera Dependency[]
+  fileRelations    Json // Stockera FileRelation[]
+
+  @@map("user_aggregate")
+}
+
+model Project {
+  id          String    @id @default(uuid()) // Identifiant unique du projet
+  name        String // Nom du projet
+  description String? // Description du projet (optionnel)
+  image       String? // URL de l'image du projet (optionnel)
+  status      Status    @default(TODO) // Statut du projet
+  priority    Int       @default(1) // Priorité du projet (1 = basse)
+  startDate   DateTime? // Date de début du projet (optionnel)
+  endDate     DateTime? // Date de fin du projet (optionnel)
+  createdAt   DateTime  @default(now()) // Date de création du projet
+  updatedAt   DateTime  @updatedAt // Date de dernière mise à jour du projet
+
+  themas      Thema[] // Thèmes associés au projet
+  epics       Epic[] // Épics associés au projet
+  userStories UserStory[] // Histoires utilisateur associées au projet
+  sprints     Sprint[] // Sprints associés au projet
+  members     Member[]    @relation("ProjectMembers") // Membres du projet
+  folders     Folder[] // Dossiers du projet
+  files       File[] // Fichiers associés au projet
+  comments    Comment[] // Commentaires sur le projet
+  creator     Member?     @relation("ProjectCreator", fields: [creatorId], references: [id]) // Membre ayant créé le projet
+  creatorId   String? // ID du créateur (membre)
+
+  @@index([name]) // Index sur le nom pour des recherches rapides
+  @@index([status]) // Index sur le statut pour des filtres efficaces
+  @@map("project") // Nom de la table dans la base de données
+}
+
+model Member {
+  id        String   @id @default(uuid()) // Identifiant unique de l'appartenance
+  role      Role     @default(USER) // Rôle du membre dans le projet
+  joinedAt  DateTime @default(now()) // Date d'adhésion au projet
+  updatedAt DateTime @updatedAt // Date de dernière mise à jour de l'appartenance
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Utilisateur associé
+  userId    String // ID de l'utilisateur
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade, name: "ProjectMembers") // Projet associé
+  projectId String // ID du projet
+
+  files           File[] // Fichiers téléversés par le membre
+  tasks           Task[] // Tâches assignées au membre
+  subtasks        Subtask[] // Sous-tâches assignées au membre
+  comments        Comment[] // Commentaires écrits par le membre
+  timeLogs        TimeLog[] // Journaux de temps enregistrés par le membre
+  userStories     UserStory[] // Histoires utilisateur créées par le membre
+  themas          Thema[] // Thèmes créés par le membre
+  epics           Epic[] // Épics créés par le membre
+  sprints         Sprint[] // Sprints créés par le membre
+  activities      ActivityLog[] // Activités enregistrées pour ce membre
+  createdProjects Project[]     @relation("ProjectCreator") // Projets créés par le membre
+
+  @@unique([userId, projectId]) // Unicité de la paire utilisateur-projet
+  @@map("member") // Nom de la table dans la base de données
+}
+
+model Thema {
+  id          String    @id @default(uuid()) // Identifiant unique du thème
+  name        String // Nom du thème
+  description String? // Description du thème (optionnel)
+  status      Status    @default(TODO) // Statut du thème
+  priority    Int       @default(1) // Priorité du thème
+  startDate   DateTime? // Date de début du thème (optionnel)
+  endDate     DateTime? // Date de fin du thème (optionnel)
+  createdAt   DateTime  @default(now()) // Date de création du thème
+  updatedAt   DateTime  @updatedAt // Date de dernière mise à jour du thème
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId String // ID du projet
+  creator   Member    @relation(fields: [creatorId], references: [id], onDelete: Cascade) // Membre ayant créé le thème
+  creatorId String // ID du créateur (membre)
+  tasks     Task[] // Tâches associées au thème
+  comments  Comment[] // Commentaires sur le thème
+
+  @@map("thema") // Nom de la table dans la base de données
+}
+
+model Epic {
+  id          String    @id @default(uuid()) // Identifiant unique de l'épic
+  name        String // Nom de l'épic
+  description String? // Description de l'épic (optionnel)
+  status      Status    @default(TODO) // Statut de l'épic
+  priority    Int       @default(1) // Priorité de l'épic
+  startDate   DateTime? // Date de début du thème (optionnel)
+  endDate     DateTime? // Date de fin du thème (optionnel)
+  createdAt   DateTime  @default(now()) // Date de création de l'épic
+  updatedAt   DateTime  @updatedAt // Date de dernière mise à jour de l'épic
+
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId   String // ID du projet
+  creator     Member      @relation(fields: [creatorId], references: [id], onDelete: Cascade) // Membre ayant créé l'épic
+  creatorId   String // ID du créateur (membre)
+  userStories UserStory[] // Histoires utilisateur associées à l'épic
+  comments    Comment[] // Commentaires sur l'épic
+
+  @@map("epic") // Nom de la table dans la base de données
+}
+
+model UserStory {
+  id          String   @id @default(uuid()) // Identifiant unique de l'histoire utilisateur
+  title       String // Titre de l'histoire utilisateur
+  description String? // Description de l'histoire utilisateur (optionnel)
+  status      Status   @default(TODO) // Statut de l'histoire utilisateur
+  priority    Int      @default(1) // Priorité de l'histoire utilisateur
+  createdAt   DateTime @default(now()) // Date de création de l'histoire utilisateur
+  updatedAt   DateTime @updatedAt // Date de dernière mise à jour de l'histoire utilisateur
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId String // ID du projet
+  epic      Epic?     @relation(fields: [epicId], references: [id], onDelete: SetNull) // Épic associé
+  epicId    String? // ID de l'épic (optionnel)
+  creator   Member    @relation(fields: [creatorId], references: [id], onDelete: Cascade) // Membre ayant créé l'histoire
+  creatorId String // ID du créateur (membre)
+  sprint    Sprint?   @relation(fields: [sprintId], references: [id], onDelete: SetNull) // Sprint associé
+  sprintId  String? // ID du sprint (optionnel)
+  tasks     Task[] // Tâches associées à l'histoire utilisateur
+  comments  Comment[] // Commentaires sur l'histoire utilisateur
+
+  @@map("user_story") // Nom de la table dans la base de données
+}
+
+model Sprint {
+  id          String    @id @default(uuid()) // Identifiant unique du sprint
+  name        String // Nom du sprint
+  description String? // Description du sprint (optionnel)
+  status      Status    @default(TODO) // Statut du sprint
+  startDate   DateTime? // Date de début du sprint (optionnel)
+  endDate     DateTime? // Date de fin du sprint (optionnel)
+  createdAt   DateTime  @default(now()) // Date de création du sprint
+  updatedAt   DateTime  @updatedAt // Date de dernière mise à jour du sprint
+
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId   String // ID du projet
+  creator     Member      @relation(fields: [creatorId], references: [id], onDelete: Cascade) // Membre ayant créé le sprint
+  creatorId   String // ID du créateur (membre)
+  userStories UserStory[] // Histoires utilisateur associées au sprint
+  tasks       Task[] // Tâches associées au sprint
+  subtasks    Subtask[] // Sous-tâches associées au sprint
+  files       File[] // Fichiers associés au sprint
+
+  @@map("sprint") // Nom de la table dans la base de données
+}
+
+model Task {
+  id                String    @id @default(uuid()) // Identifiant unique de la tâche
+  title             String // Titre de la tâche
+  description       String? // Description de la tâche (optionnel)
+  status            Status    @default(TODO) // Statut de la tâche
+  priority          Int       @default(1) // Priorité de la tâche
+  dueDate           DateTime? // Date d'échéance de la tâche (optionnel)
+  estimatedDuration Int? // Durée estimée en heures (optionnel)
+  createdAt         DateTime  @default(now()) // Date de création de la tâche
+  updatedAt         DateTime  @updatedAt // Date de dernière mise à jour de la tâche
+
+  thema        Thema?     @relation(fields: [themaId], references: [id], onDelete: SetNull) // Thème associé
+  themaId      String? // ID du thème (optionnel)
+  userStory    UserStory? @relation(fields: [userStoryId], references: [id], onDelete: SetNull) // Histoire utilisateur associée
+  userStoryId  String? // ID de l'histoire utilisateur (optionnel)
+  sprint       Sprint?    @relation(fields: [sprintId], references: [id], onDelete: SetNull) // Sprint associé
+  sprintId     String? // ID du sprint (optionnel)
+  assignee     Member?    @relation(fields: [assigneeId], references: [id], onDelete: SetNull) // Membre assigné
+  assigneeId   String? // ID du membre assigné (optionnel)
+  subtasks     Subtask[] // Sous-tâches associées
+  dependencies Task[]     @relation("TaskDependencies") // Tâches dont celle-ci dépend
+  blockedBy    Task[]     @relation("TaskDependencies") // Tâches qui bloquent celle-ci
+  comments     Comment[] // Commentaires sur la tâche
+  timeLogs     TimeLog[] // Journaux de temps pour la tâche
+
+  @@map("task") // Nom de la table dans la base de données
+}
+
+model Subtask {
+  id          String   @id @default(uuid()) // Identifiant unique de la sous-tâche
+  title       String // Titre de la sous-tâche
+  description String? // Description de la sous-tâche (optionnel)
+  status      Status   @default(TODO) // Statut de la sous-tâche
+  createdAt   DateTime @default(now()) // Date de création de la sous-tâche
+  updatedAt   DateTime @updatedAt // Date de dernière mise à jour de la sous-tâche
+
+  task       Task    @relation(fields: [taskId], references: [id], onDelete: Cascade) // Tâche parente
+  taskId     String // ID de la tâche parente
+  sprint     Sprint? @relation(fields: [sprintId], references: [id], onDelete: SetNull) // Sprint associé
+  sprintId   String? // ID du sprint (optionnel)
+  assignee   Member? @relation(fields: [assigneeId], references: [id], onDelete: SetNull) // Membre assigné
+  assigneeId String? // ID du membre assigné (optionnel)
+  files      File[] // Fichiers associés à la sous-tâche
+
+  @@map("subtask") // Nom de la table dans la base de données
+}
+
+model Folder {
+  id        String   @id @default(uuid()) // Identifiant unique du dossier
+  name      String // Nom du dossier
+  path      String // Chemin complet du dossier (ex. /parent/sous-dossier)
+  createdAt DateTime @default(now()) // Date de création du dossier
+  updatedAt DateTime @updatedAt // Date de dernière mise à jour du dossier
+  parentId  String? // ID du dossier parent pour la relation hiérarchique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId String // ID du projet
+  files     File[] // Fichiers contenus dans le dossier
+
+  @@index([parentId]) // Index sur parentId pour optimiser les requêtes hiérarchiques
+  @@index([projectId]) // Index sur projectId pour optimiser les requêtes par projet
+  @@map("project_folder") // Nom de la table dans la base de données
+}
+
+model File {
+  id          String   @id @default(uuid()) // Identifiant unique du fichier
+  name        String // Nom du fichier
+  description String? // Description du fichier (optionnel)
+  type        FileType // Type de fichier (ex. DOCUMENT, IMAGE)
+  size        Int // Taille du fichier en octets
+  url         String // URL d'accès au fichier
+  version     Int      @default(1) // Version du fichier
+  createdAt   DateTime @default(now()) // Date de création du fichier
+  updatedAt   DateTime @updatedAt // Date de dernière mise à jour du fichier
+
+  folder        Folder?        @relation(fields: [folderId], references: [id], onDelete: SetNull) // Dossier contenant le fichier
+  folderId      String? // ID du dossier (optionnel)
+  project       Project        @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId     String // ID du projet
+  subtask       Subtask?       @relation(fields: [subtaskId], references: [id], onDelete: SetNull) // Sous-tâche associée
+  subtaskId     String? // ID de la sous-tâche (optionnel)
+  sprint        Sprint?        @relation(fields: [sprintId], references: [id], onDelete: SetNull) // Sprint associé
+  sprintId      String? // ID du sprint (optionnel)
+  uploader      Member         @relation(fields: [uploaderId], references: [id], onDelete: Cascade) // Membre qui a téléversé
+  uploaderId    String // ID du membre uploader
+  dependencies  Dependency[] // Dépendances externes (bibliothèques)
+  relationsFrom FileRelation[] @relation("FileRelationFrom") // Relations sortantes vers d'autres fichiers
+  relationsTo   FileRelation[] @relation("FileRelationTo") // Relations entrantes depuis d'autres fichiers
+
+  @@map("project_file") // Nom de la table dans la base de données
+}
+
+model Dependency {
+  id            String   @id @default(uuid()) // Identifiant unique de la dépendance
+  fileId        String // ID du fichier associé
+  componentName String // Nom du composant externe (ex. prisma, zod)
+  version       String? // Version du composant (ex. 5.0.0)
+  createdAt     DateTime @default(now()) // Date de création de la dépendance
+
+  file File @relation(fields: [fileId], references: [id], onDelete: Cascade) // Fichier associé
+
+  @@map("dependency") // Nom de la table dans la base de données
+}
+
+model FileRelation {
+  id         String       @id @default(uuid()) // Identifiant unique de la relation
+  fromFileId String // ID du fichier source
+  toFileId   String // ID du fichier cible
+  type       RelationType // Type de relation (ex. IMPORT, REFERENCE)
+  createdAt  DateTime     @default(now()) // Date de création de la relation
+
+  fromFile File @relation(fields: [fromFileId], references: [id], onDelete: Cascade, name: "FileRelationFrom") // Fichier source
+  toFile   File @relation(fields: [toFileId], references: [id], onDelete: Cascade, name: "FileRelationTo") // Fichier cible
+
+  @@unique([fromFileId, toFileId]) // Unicité de la paire source-cible
+  @@map("file_relation") // Nom de la table dans la base de données
+}
+
+model Comment {
+  id        String   @id @default(uuid()) // Identifiant unique du commentaire
+  content   String // Contenu du commentaire
+  createdAt DateTime @default(now()) // Date de création du commentaire
+  updatedAt DateTime @updatedAt // Date de dernière mise à jour du commentaire
+
+  author      Member     @relation(fields: [authorId], references: [id], onDelete: Cascade) // Membre auteur du commentaire
+  authorId    String // ID du membre auteur
+  project     Project?   @relation(fields: [projectId], references: [id], onDelete: Cascade) // Projet associé
+  projectId   String? // ID du projet (optionnel)
+  thema       Thema?     @relation(fields: [themaId], references: [id], onDelete: Cascade) // Thème associé
+  themaId     String? // ID du thème (optionnel)
+  epic        Epic?      @relation(fields: [epicId], references: [id], onDelete: Cascade) // Épic associé
+  epicId      String? // ID de l'épic (optionnel)
+  userStory   UserStory? @relation(fields: [userStoryId], references: [id], onDelete: Cascade) // Histoire utilisateur associée
+  userStoryId String? // ID de l'histoire utilisateur (optionnel)
+  task        Task?      @relation(fields: [taskId], references: [id], onDelete: Cascade) // Tâche associée
+  taskId      String? // ID de la tâche (optionnel)
+
+  @@map("comment") // Nom de la table dans la base de données
+}
+
+model TimeLog {
+  id          String    @id @default(uuid()) // Identifiant unique du journal de temps
+  description String? // Description du journal (optionnel)
+  startTime   DateTime // Heure de début du travail
+  endTime     DateTime? // Heure de fin du travail (optionnel)
+  createdAt   DateTime  @default(now()) // Date de création du journal
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade) // Tâche associée
+  taskId      String // ID de la tâche
+  member      Member    @relation(fields: [memberId], references: [id], onDelete: Cascade) // Membre associé
+  memberId    String // ID du membre
+
+  @@map("time_log") // Nom de la table dans la base de données
+}
+
+model ActivityLog {
+  id        String     @id @default(uuid()) // Identifiant unique du journal d'activité
+  action    ActionType // Action effectuée (ex. CREATE, UPDATE, DELETE)
+  entityId  String // ID de l'entité concernée (ex. projet, tâche)
+  timestamp DateTime   @default(now()) // Date et heure de l'action
+
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade) // Membre ayant effectué l'action
+  memberId String // ID du membre
+
+  @@map("activity_log") // Nom de la table dans la base de données
+}
