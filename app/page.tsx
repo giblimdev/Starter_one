@@ -2,45 +2,48 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DevToDoList from "@/components/dev/DevToDoList";
-import { Rocket, Shield, Layout, Github } from "lucide-react"; // Import direct depuis lucide-react
+import { Rocket, Shield, Layout, Github } from "lucide-react"; // Import directly from lucide-react
 import { Card } from "@/components/ui/card";
 
 export default function Home() {
   const features = [
     {
       icon: <Rocket className="h-8 w-8" />,
-      title: "Développement Rapide",
-      description: "Template prêt à l'emploi avec architecture optimisée",
+      title: "Rapid Development",
+      description: "Ready-to-use template with optimized architecture",
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Sécurité Intégrée",
-      description: "Authentification complète avec rôles et permissions",
+      title: "Integrated Security",
+      description: "Complete authentication with roles and permissions",
     },
     {
       icon: <Layout className="h-8 w-8" />,
-      title: "UI Moderne",
-      description: "Composants Shadcn/ui personnalisables et accessibles",
+      title: "Modern UI",
+      description: "Customizable and accessible Shadcn/ui components",
     },
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
+      <div className="m-auto">
+        <p className="text-red-500">working on schema and forget pw</p>
+      </div>
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted">
           <div className="container mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-              Votre Template <span className="text-primary">Next.js</span>{" "}
-              Ultime
+              Your Ultimate <span className="text-primary">Next.js</span>{" "}
+              Template
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-              Un starter kit complet avec authentification, dashboard et outils
-              de développement intégrés
+              A complete starter kit with authentication, dashboard, and
+              integrated development tools.
             </p>
             <div className="flex gap-4 justify-center">
               <Button asChild size="lg">
-                <Link href="/dev">Voir la Documentation</Link>
+                <Link href="/dev">View Documentation</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link
@@ -59,7 +62,7 @@ export default function Home() {
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">
-              Fonctionnalités Clés
+              Key Features
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -88,10 +91,10 @@ export default function Home() {
         <section className="py-16 bg-muted">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-4">
-              Suivi de Développement
+              Development Tracker
             </h2>
             <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-              Visualisez l&apos;avancement du projet et les tâches à venir
+              Visualize project progress and upcoming tasks.
             </p>
             <div className="max-w-5xl mx-auto">
               <DevToDoList />
@@ -103,17 +106,16 @@ export default function Home() {
         <section className="py-20 bg-background">
           <div className="container mx-auto text-center px-4">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Prêt à commencer ?
+              Ready to get started?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Clonez ce template et personnalisez-le pour votre projet en
-              quelques minutes
+              Clone this template and customize it for your project in minutes.
             </p>
             <Button asChild size="lg" className="mx-2">
-              <Link href="/auth/sign-up">Créer un compte</Link>
+              <Link href="/auth/sign-up">Create an account</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="mx-2">
-              <Link href="/dev">En savoir plus</Link>
+              <Link href="/dev">Learn more</Link>
             </Button>
           </div>
         </section>
@@ -123,7 +125,7 @@ export default function Home() {
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground">
-            © {new Date().getFullYear()} Mon Application. Tous droits réservés.
+            © {new Date().getFullYear()} My Application. All rights reserved.
           </p>
         </div>
       </footer>

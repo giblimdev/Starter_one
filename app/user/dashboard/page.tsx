@@ -108,11 +108,10 @@ export default function DashboardPage() {
   if (!user)
     return (
       <div className="container mx-auto py-8 text-center text-red-600">
-        Utilisateur non trouvé
+        User not found
       </div>
     );
 
-  // Parse JSON fields
   const projects: Project[] = user.projects ? JSON.parse(user.projects) : [];
   const tasks: Task[] = user.tasks ? JSON.parse(user.tasks) : [];
   const timeLogs: TimeLog[] = user.timeLogs ? JSON.parse(user.timeLogs) : [];
@@ -120,19 +119,17 @@ export default function DashboardPage() {
     ? JSON.parse(user.activities)
     : [];
 
-  // Calculate time metrics
   const totalTimeLogged =
-    timeLogs.reduce((sum, log) => sum + (log.duration || 0), 0) / 3600; // Convert seconds to hours
+    timeLogs.reduce((sum, log) => sum + (log.duration || 0), 0) / 3600;
   const completedTasks = tasks.filter((t) => t.status === "COMPLETED").length;
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
       <div className="flex items-center gap-4">
         {user.userImage ? (
           <Image
             src={user.userImage}
-            alt={user.userName || "Utilisateur"}
+            alt={user.userName || "User"}
             width={64}
             height={64}
             className="rounded-full border-2 border-white shadow-md"
@@ -143,57 +140,52 @@ export default function DashboardPage() {
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold">
-            {user.userName || "Utilisateur"}
-          </h1>
+          <h1 className="text-3xl font-bold">{user.userName || "User"}</h1>
           <p className="text-muted-foreground capitalize">
-            {user.userRole?.toLowerCase() || "membre"}
+            {user.userRole?.toLowerCase() || "member"}
           </p>
         </div>
       </div>
 
-      {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
           icon={<Briefcase />}
           value={projects.length}
-          label="Projets"
+          label="Projects"
         />
         <StatCard
           icon={<CheckCircle />}
           value={completedTasks}
-          label="Tâches terminées"
+          label="Completed Tasks"
         />
         <StatCard
           icon={<Clock />}
           value={`${totalTimeLogged.toFixed(1)}h`}
-          label="Temps travaillé"
+          label="Time Logged"
         />
       </div>
 
-      {/* Tabs for Detailed Data */}
       <Tabs defaultValue="projects" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-          <TabsTrigger value="projects">Projets</TabsTrigger>
-          <TabsTrigger value="tasks">Tâches</TabsTrigger>
-          <TabsTrigger value="timeLogs">Temps</TabsTrigger>
-          <TabsTrigger value="activities">Activités</TabsTrigger>
+          <TabsTrigger value="projects">Projects</TabsTrigger>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="timeLogs">Time Logs</TabsTrigger>
+          <TabsTrigger value="activities">Activity</TabsTrigger>
         </TabsList>
 
-        {/* Projects Tab */}
         <TabsContent value="projects">
           <Card>
             <CardHeader>
-              <CardTitle>Projets</CardTitle>
+              <CardTitle>Projects</CardTitle>
             </CardHeader>
             <CardContent>
               {projects.length > 0 ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Nom</TableHead>
-                      <TableHead>Statut</TableHead>
-                      <TableHead>Créé le</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Created</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -203,7 +195,7 @@ export default function DashboardPage() {
                         <TableCell>{project.status}</TableCell>
                         <TableCell>
                           {new Date(project.createdAt).toLocaleDateString(
-                            "fr-FR"
+                            "en-US"
                           )}
                         </TableCell>
                       </TableRow>
@@ -211,28 +203,27 @@ export default function DashboardPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-muted-foreground">Aucun projet trouvé.</p>
+                <p className="text-muted-foreground">No projects found.</p>
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Tasks Tab */}
         <TabsContent value="tasks">
           <Card>
             <CardHeader>
-              <CardTitle>Tâches</CardTitle>
+              <CardTitle>Tasks</CardTitle>
             </CardHeader>
             <CardContent>
               {tasks.length > 0 ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Titre</TableHead>
-                      <TableHead>Statut</TableHead>
-                      <TableHead>Priorité</TableHead>
-                      <TableHead>Échéance</TableHead>
-                      <TableHead>Progrès</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Due Date</TableHead>
+                      <TableHead>Progress</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -240,11 +231,11 @@ export default function DashboardPage() {
                       <TableRow key={task.id}>
                         <TableCell>{task.title}</TableCell>
                         <TableCell>{task.status}</TableCell>
-                        <TableCell>{task.priority || "Non spécifié"}</TableCell>
+                        <TableCell>{task.priority || "Unspecified"}</TableCell>
                         <TableCell>
                           {task.dueDate
-                            ? new Date(task.dueDate).toLocaleDateString("fr-FR")
-                            : "Aucune"}
+                            ? new Date(task.dueDate).toLocaleDateString("en-US")
+                            : "None"}
                         </TableCell>
                         <TableCell>
                           <Progress
@@ -262,38 +253,37 @@ export default function DashboardPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-muted-foreground">Aucune tâche trouvée.</p>
+                <p className="text-muted-foreground">No tasks found.</p>
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Time Logs Tab */}
         <TabsContent value="timeLogs">
           <Card>
             <CardHeader>
-              <CardTitle>Temps travaillé</CardTitle>
+              <CardTitle>Time Logs</CardTitle>
             </CardHeader>
             <CardContent>
               {timeLogs.length > 0 ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Début</TableHead>
-                      <TableHead>Fin</TableHead>
-                      <TableHead>Durée (heures)</TableHead>
+                      <TableHead>Start</TableHead>
+                      <TableHead>End</TableHead>
+                      <TableHead>Duration (hours)</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {timeLogs.map((log) => (
                       <TableRow key={log.id}>
                         <TableCell>
-                          {new Date(log.startTime).toLocaleString("fr-FR")}
+                          {new Date(log.startTime).toLocaleString("en-US")}
                         </TableCell>
                         <TableCell>
                           {log.endTime
-                            ? new Date(log.endTime).toLocaleString("fr-FR")
-                            : "En cours"}
+                            ? new Date(log.endTime).toLocaleString("en-US")
+                            : "Ongoing"}
                         </TableCell>
                         <TableCell>
                           {log.duration
@@ -305,17 +295,16 @@ export default function DashboardPage() {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-muted-foreground">Aucun temps enregistré.</p>
+                <p className="text-muted-foreground">No time logs found.</p>
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Activities Tab */}
         <TabsContent value="activities">
           <Card>
             <CardHeader>
-              <CardTitle>Activités récentes</CardTitle>
+              <CardTitle>Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               {activities.length > 0 ? (
@@ -331,16 +320,14 @@ export default function DashboardPage() {
                       <TableRow key={activity.id}>
                         <TableCell>{activity.action}</TableCell>
                         <TableCell>
-                          {new Date(activity.timestamp).toLocaleString("fr-FR")}
+                          {new Date(activity.timestamp).toLocaleString("en-US")}
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-muted-foreground">
-                  Aucune activité trouvée.
-                </p>
+                <p className="text-muted-foreground">No activities found.</p>
               )}
             </CardContent>
           </Card>
@@ -350,7 +337,6 @@ export default function DashboardPage() {
   );
 }
 
-// Utility Components
 function StatCard({
   icon,
   value,

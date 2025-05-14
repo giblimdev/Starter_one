@@ -13,23 +13,23 @@ export default function GoodbyePage() {
 
     window.location.href = "/auth/sign-in";
   };
+
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
 
   const getMessage = () => {
     switch (reason) {
       case "session_expired":
-        return "Votre session a expiré pour des raisons de sécurité";
+        return "Your session has expired for security reasons";
       case "inactivity":
-        return "Déconnexion automatique après inactivité";
+        return "Automatic disconnection after inactivity";
       default:
-        return "Vous avez été déconnecté avec succès";
+        return "You have been successfully disconnected";
     }
   };
+
   const handleGoHome = () => {
     router.push("/");
-    // Alternative avec rechargement complet si nécessaire:
-    // window.location.href = "/";
   };
 
   return (
@@ -39,11 +39,9 @@ export default function GoodbyePage() {
           <RocketIcon className="w-16 h-16 mx-auto text-indigo-600" />
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-800">À bientôt !</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Goodbye!</h1>
 
-        <p className="text-gray-600">
-          {getMessage()}. Revenez quand vous voulez !
-        </p>
+        <p className="text-gray-600">{getMessage()}. Come back anytime!</p>
 
         <div className="pt-6 space-y-4">
           <Button
@@ -51,7 +49,7 @@ export default function GoodbyePage() {
             className="w-full bg-indigo-600 hover:bg-indigo-700"
             onClick={handleReconnect}
           >
-            Se reconnecter
+            Sign In Again
           </Button>
 
           <Button
@@ -60,7 +58,7 @@ export default function GoodbyePage() {
             className="w-full border-indigo-300 text-indigo-600 hover:bg-indigo-50"
             onClick={handleGoHome}
           >
-            Retour à l&apos;accueil
+            Back to Home
           </Button>
         </div>
       </div>

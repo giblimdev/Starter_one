@@ -29,69 +29,69 @@ const DevToDoList: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([
     {
       id: "auth",
-      name: "1. Authentification Utilisateur",
+      name: "1. User Authentication", // Translated
       totalHours: 27,
       completedHours: 0,
       tasks: [
         {
           id: "auth-1",
-          title: "Configurer BetterAuth.js",
+          title: "Configure BetterAuth.js", // Translated
           priority: "High",
           effort: 8,
-          description: "Configuration des fournisseurs (Email/Google/GitHub)",
+          description: "Provider configuration (Email/Google/GitHub)", // Translated
           subtasks: [
-            "Créer la route /api/auth/[...all]",
-            "Configurer l'adaptateur Prisma",
-            "Ajouter les variables d'environnement",
+            "Create /api/auth/[...all] route", // Translated
+            "Configure Prisma adapter", // Translated
+            "Add environment variables", // Translated
           ],
-          dependencies: ["BetterAuth", "bcrypt"],
+          dependencies: ["BetterAuth", "bcrypt"], // Kept as is (library names)
           completed: false,
         },
         {
           id: "auth-2",
-          title: "Formulaire d'inscription",
+          title: "Signup Form", // Translated
           priority: "High",
           effort: 4,
-          description: "Page /auth/signup avec validation",
+          description: "/auth/signup page with validation", // Translated
           subtasks: [
-            "Champs email/nom/mot de passe",
-            "Validation avec Zod",
-            "Notifications toast",
+            "Email/Name/Password fields", // Translated
+            "Validation with Zod", // Translated
+            "Toast notifications", // Translated
           ],
-          dependencies: ["react-hook-form", "zod", "sonner"],
+          dependencies: ["react-hook-form", "zod", "sonner"], // Kept as is
           completed: false,
         },
         {
           id: "auth-3",
-          title: "Formulaire de connexion",
+          title: "Login Form", // Translated
           priority: "High",
           effort: 3,
-          description: "Page /auth/signin sécurisée",
-          dependencies: ["react-hook-form", "zod"],
+          description: "Secure /auth/signin page", // Translated
+          dependencies: ["react-hook-form", "zod"], // Kept as is
           completed: false,
         },
         {
           id: "auth-4",
-          title: "Gestion des rôles",
+          title: "Role Management", // Translated
           priority: "High",
           effort: 6,
-          description: "Système de permissions",
+          description: "Permissions system", // Translated
           subtasks: [
-            "Ajouter enum Role au schéma",
-            "Middleware de protection",
-            "Restreindre /admin aux ADMIN",
+            "Add Role enum to schema", // Translated
+            "Protection middleware", // Translated
+            "Restrict /admin to ADMIN", // Translated
           ],
           completed: false,
         },
         {
           id: "auth-5",
-          title: "Réinitialisation mot de passe",
+          title: "Password Reset", // Translated
           priority: "Medium",
           effort: 6,
-          description: "Flux complet de réinitialisation",
+          description: "Complete reset flow", // Translated
           subtasks: [
-            "Pages forgot/reset password",
-            "Envoi d'emails via Resend",
+            "Forgot/reset password pages", // Translated
+            "Email sending via Resend", // Translated
           ],
           completed: false,
         },
@@ -99,217 +99,217 @@ const DevToDoList: React.FC = () => {
     },
     {
       id: "posts",
-      name: "2. Gestion des Articles",
+      name: "2. Post Management", // Translated
       totalHours: 21,
       completedHours: 0,
       tasks: [
         {
           id: "posts-1",
-          title: "Finaliser NewPostForm",
+          title: "Finalize NewPostForm", // Translated
           priority: "High",
           effort: 4,
           subtasks: [
-            "Validation authorId",
-            "Création automatique des slugs",
-            "Tests de soumission",
+            "AuthorId validation", // Translated
+            "Automatic slug generation", // Translated
+            "Submission tests", // Translated
           ],
           completed: false,
         },
         {
           id: "posts-2",
-          title: "Édition d'articles",
+          title: "Post Editing", // Translated
           priority: "High",
           effort: 6,
-          description: "Page /admin/posts/[id]/edit",
-          dependencies: ["react-datepicker"],
+          description: "/admin/posts/[id]/edit page", // Translated
+          dependencies: ["react-datepicker"], // Kept as is
           completed: false,
         },
         {
           id: "posts-3",
-          title: "Suppression d'articles",
+          title: "Post Deletion", // Translated
           priority: "Medium",
           effort: 3,
-          description: "Avec confirmation",
-          dependencies: ["Shadcn/UI Dialog"],
+          description: "With confirmation", // Translated
+          dependencies: ["Shadcn/UI Dialog"], // Kept as is
           completed: false,
         },
         {
           id: "posts-4",
-          title: "Liste des articles",
+          title: "Post List", // Translated
           priority: "High",
           effort: 8,
           subtasks: [
-            "Tableau avec tri/filtre",
-            "Pagination",
-            "Recherche instantanée",
+            "Table with sorting/filtering", // Translated
+            "Pagination", // Kept as is
+            "Instant search", // Translated
           ],
-          dependencies: ["react-query"],
+          dependencies: ["react-query"], // Kept as is
           completed: false,
         },
       ],
     },
     {
       id: "public",
-      name: "3. Pages Publiques",
+      name: "3. Public Pages", // Translated
       totalHours: 28,
       completedHours: 0,
       tasks: [
         {
           id: "public-1",
-          title: "Page d'accueil",
+          title: "Homepage", // Translated
           priority: "High",
           effort: 6,
-          description: "Liste des derniers articles publiés",
-          dependencies: ["next/image"],
+          description: "List of latest published articles", // Translated
+          dependencies: ["next/image"], // Kept as is
           completed: false,
         },
         {
           id: "public-2",
-          title: "Page article",
+          title: "Post Page", // Translated
           priority: "High",
           effort: 8,
           subtasks: [
-            "Rendu Markdown",
-            "Génération SSG",
-            "Système de likes/views",
+            "Markdown rendering", // Translated
+            "SSG generation", // Translated
+            "Likes/Views system", // Translated
           ],
-          dependencies: ["react-markdown"],
+          dependencies: ["react-markdown"], // Kept as is
           completed: false,
         },
         {
           id: "public-3",
-          title: "Pages catégories/tags",
+          title: "Category/Tag Pages", // Translated
           priority: "Medium",
           effort: 6,
-          description: "Routes dynamiques",
+          description: "Dynamic routes", // Translated
           completed: false,
         },
         {
           id: "public-4",
-          title: "Recherche",
+          title: "Search", // Translated
           priority: "Medium",
           effort: 8,
-          description: "Recherche full-text",
-          dependencies: ["algolia"],
+          description: "Full-text search", // Translated
+          dependencies: ["algolia"], // Kept as is
           completed: false,
         },
       ],
     },
     {
       id: "comments",
-      name: "4. Système de Commentaires",
+      name: "4. Comment System", // Translated
       totalHours: 21,
       completedHours: 0,
       tasks: [
         {
           id: "comments-1",
-          title: "Formulaire de commentaire",
+          title: "Comment Form", // Translated
           priority: "High",
           effort: 4,
-          description: "Validation en temps réel",
-          dependencies: ["zod"],
+          description: "Real-time validation", // Translated
+          dependencies: ["zod"], // Kept as is
           completed: false,
         },
         {
           id: "comments-2",
-          title: "Affichage des commentaires",
+          title: "Comment Display", // Translated
           priority: "High",
           effort: 4,
-          subtasks: ["Pagination", "Tri chronologique"],
+          subtasks: ["Pagination", "Chronological sorting"], // Translated
           completed: false,
         },
         {
           id: "comments-3",
-          title: "Édition de commentaires",
+          title: "Comment Editing", // Translated
           priority: "Medium",
           effort: 4,
-          description: "Fenêtre de 15 minutes",
+          description: "15-minute window", // Translated
           completed: false,
         },
         {
           id: "comments-4",
-          title: "Modération",
+          title: "Moderation", // Kept as is
           priority: "Medium",
           effort: 6,
-          subtasks: ["Interface admin", "Filtres par statut"],
+          subtasks: ["Admin interface", "Status filters"], // Translated
           completed: false,
         },
         {
           id: "comments-5",
-          title: "Suppression",
+          title: "Deletion", // Translated
           priority: "Medium",
           effort: 3,
-          dependencies: ["Shadcn/UI Dialog"],
+          dependencies: ["Shadcn/UI Dialog"], // Kept as is
           completed: false,
         },
       ],
     },
     {
       id: "admin",
-      name: "5. Administration",
+      name: "5. Administration", // Kept as is
       totalHours: 18,
       completedHours: 0,
       tasks: [
         {
           id: "admin-1",
-          title: "Dashboard",
+          title: "Dashboard", // Kept as is
           priority: "Medium",
           effort: 8,
-          description: "Statistiques et activité récente",
-          dependencies: ["recharts"],
+          description: "Statistics and recent activity", // Translated
+          dependencies: ["recharts"], // Kept as is
           completed: false,
         },
         {
           id: "admin-2",
-          title: "Gestion utilisateurs",
+          title: "User Management", // Translated
           priority: "Medium",
           effort: 6,
-          subtasks: ["CRUD complet", "Changement de rôles"],
+          subtasks: ["Complete CRUD", "Role changes"], // Translated
           completed: false,
         },
         {
           id: "admin-3",
-          title: "Paramètres",
+          title: "Settings", // Translated
           priority: "Low",
           effort: 4,
-          description: "Configuration du blog",
+          description: "Blog configuration", // Translated
           completed: false,
         },
       ],
     },
     {
       id: "seo",
-      name: "6. SEO & Performance",
+      name: "6. SEO & Performance", // Kept as is
       totalHours: 16,
       completedHours: 0,
       tasks: [
         {
           id: "seo-1",
-          title: "Métadonnées",
+          title: "Metadata", // Kept as is
           priority: "High",
           effort: 4,
-          dependencies: ["next-seo"],
+          dependencies: ["next-seo"], // Kept as is
           completed: false,
         },
         {
           id: "seo-2",
-          title: "Sitemap",
+          title: "Sitemap", // Kept as is
           priority: "Medium",
           effort: 3,
-          dependencies: ["next-sitemap"],
+          dependencies: ["next-sitemap"], // Kept as is
           completed: false,
         },
         {
           id: "seo-3",
-          title: "Optimisation",
+          title: "Optimization", // Translated
           priority: "Medium",
           effort: 6,
-          subtasks: ["Lazy loading", "Cache stratégique"],
+          subtasks: ["Lazy loading", "Strategic caching"], // Translated
           completed: false,
         },
         {
           id: "seo-4",
-          title: "Flux RSS",
+          title: "RSS Feed", // Translated
           priority: "Medium",
           effort: 3,
           completed: false,
@@ -366,18 +366,17 @@ const DevToDoList: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Blog Development To-Do List</h1>
-
+      <h1 className="text-3xl font-bold mb-6">Blog Development To-Do List</h1>{" "}
+      {/* Kept as is */}
       <div className="mb-8">
         <div className="flex justify-between mb-2">
           <span>
-            Progression globale: {completedHours}h/{totalHours}h
+            Overall Progress: {completedHours}h/{totalHours}h {/* Translated */}
           </span>
           <span>{progress}%</span>
         </div>
         <Progress value={progress} className="h-4" />
       </div>
-
       <div className="space-y-4">
         {categories.map((category) => (
           <Card key={category.id}>
@@ -389,7 +388,8 @@ const DevToDoList: React.FC = () => {
                 <div>
                   <CardTitle>{category.name}</CardTitle>
                   <div className="text-sm text-gray-500 mt-1">
-                    {category.completedHours}h complétées sur{" "}
+                    {category.completedHours}h completed out of{" "}
+                    {/* Translated */}
                     {category.totalHours}h
                     <Progress
                       value={
@@ -406,7 +406,6 @@ const DevToDoList: React.FC = () => {
                 )}
               </div>
             </CardHeader>
-
             {expandedCategory === category.id && (
               <CardContent>
                 <div className="space-y-4">
@@ -453,17 +452,15 @@ const DevToDoList: React.FC = () => {
                               </span>
                             </div>
                           </div>
-
                           {task.description && (
                             <p className="text-sm text-gray-600 mt-1">
                               {task.description}
                             </p>
                           )}
-
                           {task.subtasks && (
                             <div className="mt-3 space-y-2">
                               <h4 className="text-xs font-semibold text-gray-500">
-                                SOUS-TÂCHES:
+                                SUBTASKS: {/* Translated */}
                               </h4>
                               <ul className="space-y-1 pl-4">
                                 {task.subtasks.map((subtask, i) => (
@@ -478,11 +475,10 @@ const DevToDoList: React.FC = () => {
                               </ul>
                             </div>
                           )}
-
                           {task.dependencies && (
                             <div className="mt-3">
                               <h4 className="text-xs font-semibold text-gray-500">
-                                DÉPENDANCES:
+                                DEPENDENCIES: {/* Translated */}
                               </h4>
                               <div className="flex flex-wrap gap-1 mt-1">
                                 {task.dependencies.map((dep, i) => (

@@ -109,7 +109,7 @@ export default function SignIn() {
         console.log("Sign in successful:", data);
         toast.success("Sign in successful!");
         // Redirect to the user dashboard
-        router.push("/user/profile"); // Use router.push for client-side navigation
+        router.push("/user/infoConnect"); // Use router.push for client-side navigation
       }
     } catch (caughtError) {
       setLoading(false); // Ensure loading stops even for unexpected errors

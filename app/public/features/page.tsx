@@ -31,18 +31,18 @@ export default function FeaturesPage() {
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Fonctionnalités de Star-One
+          Star-One Features
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          Une plateforme complète de gestion de projet agile pour optimiser
-          votre workflow et améliorer la collaboration de votre équipe.
+          A complete agile project management platform to optimize your workflow
+          and improve your team&apos;s collaboration.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <FeatureSection
-          title="Gestion de Projet Agile"
-          description="Organisez votre travail avec une structure hiérarchique complète : thèmes, epics, user stories, sprints, tâches et sous-tâches. Suivez l'avancement avec différents statuts (TODO, IN_PROGRESS, REVIEW, DONE, BLOCKED, CANCELLED)."
+          title="Agile Project Management"
+          description="Organize your work with a complete hierarchical structure: themes, epics, user stories, sprints, tasks, and subtasks. Track progress with different statuses (TODO, IN_PROGRESS, REVIEW, DONE, BLOCKED, CANCELLED)."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,8 +62,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Gestion des Membres"
-          description="Attribuez différents rôles aux membres de votre équipe (USER, READER, AUTHOR, DEV, ADMIN) avec des permissions spécifiques. Suivez qui fait quoi et quand avec un système complet de traçabilité."
+          title="Member Management"
+          description="Assign different roles to your team members (USER, READER, AUTHOR, DEV, ADMIN) with specific permissions. Track who does what and when with a complete traceability system."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,8 +83,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Suivi du Temps"
-          description="Enregistrez le temps passé sur chaque tâche avec notre système de TimeLog intégré. Analysez la productivité et améliorez vos estimations pour les futurs projets."
+          title="Time Tracking"
+          description="Record the time spent on each task with our integrated TimeLog system. Analyze productivity and improve your estimates for future projects."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -104,8 +104,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Gestion Documentaire"
-          description="Organisez vos fichiers dans des dossiers structurés. Gérez différents types de documents (DOCUMENT, IMAGE, SPREADSHEET, PRESENTATION, ARCHIVE, CODE) avec versionnement et relations entre fichiers."
+          title="Document Management"
+          description="Organize your files in structured folders. Manage different document types (DOCUMENT, IMAGE, SPREADSHEET, PRESENTATION, ARCHIVE, CODE) with versioning and file relationships."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -125,8 +125,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Collaboration en Temps Réel"
-          description="Commentez sur les projets, thèmes, epics, user stories et tâches. Suivez toutes les activités avec un journal détaillé des actions (CREATE, UPDATE, DELETE)."
+          title="Real-time Collaboration"
+          description="Comment on projects, themes, epics, user stories, and tasks. Track all activities with a detailed action log (CREATE, UPDATE, DELETE)."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -146,8 +146,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Gestion des Dépendances"
-          description="Définissez des dépendances entre tâches pour visualiser le chemin critique. Établissez des relations entre fichiers (IMPORT, REFERENCE) pour maintenir la cohérence de votre documentation."
+          title="Dependency Management"
+          description="Define dependencies between tasks to visualize the critical path. Establish relationships between files (IMPORT, REFERENCE) to maintain consistency in your documentation."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -167,8 +167,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Authentification Sécurisée"
-          description="Système d'authentification robuste avec vérification d'email, connexion par réseaux sociaux et gestion des sessions. Protection des données avec différents niveaux d'accès."
+          title="Secure Authentication"
+          description="Robust authentication system with email verification, social network login, and session management. Data protection with different access levels."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -188,8 +188,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Planification de Sprint"
-          description="Planifiez et gérez vos sprints avec des dates de début et de fin. Associez des user stories, tâches et sous-tâches à chaque sprint pour un suivi précis de l'avancement."
+          title="Sprint Planning"
+          description="Plan and manage your sprints with start and end dates. Associate user stories, tasks, and subtasks with each sprint for accurate progress tracking."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -209,8 +209,8 @@ export default function FeaturesPage() {
         />
 
         <FeatureSection
-          title="Suivi d'Activité"
-          description="Gardez une trace de toutes les actions effectuées dans le système avec notre journal d'activité détaillé. Identifiez qui a fait quoi et quand pour une transparence totale."
+          title="Activity Tracking"
+          description="Keep track of all actions performed in the system with our detailed activity log. Identify who did what and when for complete transparency."
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -231,13 +231,12 @@ export default function FeaturesPage() {
       </div>
 
       <div className="mt-16 text-center">
-        <Link href={"public/newProject"}></Link>
+        <Link href={"public/newProject"}></Link> {/* Keep link path as is */}
         <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
-          Commencer un projet maintenant
+          Start a project now
         </button>
         <p className="mt-4 text-gray-500 dark:text-gray-400">
-          Découvrez comment Star-One peut transformer votre façon de gérer vos
-          projets
+          Discover how Star-One can transform the way you manage your projects
         </p>
       </div>
     </div>

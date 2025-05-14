@@ -15,13 +15,3 @@ export const AuthCredentialsSchema = z.object({
 
 // Infer the TypeScript type from the schema
 export type AuthCredentials = z.infer<typeof AuthCredentialsSchema>;
-
-// You might export more specific schemas if Sign-up has extra fields or different validation
-// export const SignInSchema = AuthCredentialsSchema; // Sign-in uses the base schema
-// export const SignUpSchema = AuthCredentialsSchema.extend({
-//   name: z.string().min(1, { message: "Name is required" }),
-//   confirmPassword: z.string().min(1, { message: "Confirm password is required" }),
-// }).refine((data) => data.password === data.confirmPassword, {
-//   message: "Passwords do not match",
-//   path: ["confirmPassword"], // Associate the error with the confirmPassword field
-// });

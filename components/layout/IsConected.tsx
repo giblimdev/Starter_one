@@ -1,3 +1,5 @@
+//@/app/components/mayout/IsConnected.tsx
+
 "use client";
 
 import { authClient } from "@/lib/auth/auth-client";
@@ -85,6 +87,9 @@ export default function UserAuthDisplay() {
           </div>
         )}
         {user.email && <DropdownMenuSeparator />}
+        <DropdownMenuItem asChild>
+          <Link href="/user/profile">Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/user/dashboard">Dashboard</Link>
         </DropdownMenuItem>

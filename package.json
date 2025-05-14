@@ -6,12 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "lint": "next lint"
   },
-  "prisma": {
-    "seed": "npm run prisma:seed"
-  },
+  "prisma": {},
   "dependencies": {
     "@better-auth/client": "^0.0.2-alpha.3",
     "@radix-ui/react-avatar": "^1.1.9",
@@ -38,6 +35,7 @@
     "react-syntax-highlighter": "^15.6.1",
     "resend": "^4.5.1",
     "sonner": "^2.0.3",
+    "swr": "^2.3.3",
     "tailwind-merge": "^3.2.0",
     "zod": "^3.24.4"
   },
