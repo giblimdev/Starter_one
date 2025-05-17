@@ -122,6 +122,7 @@ export default function SignIn() {
   };
 
   // Function to handle social login clicks
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSocialSignIn = async (provider: string) => {
     // Optional: Add validation here if social sign-in requires email input too
     // For typical social sign-in, this click just initiates the redirect flow
@@ -170,12 +171,12 @@ export default function SignIn() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
-      <Card className="p-10 max-w-md w-full">
+      <Card className=" rounded-lg rounded-t-none max-w-md w-full pt-0 pb-4">
         {" "}
         {/* Added w-full for responsiveness */}
-        <CardHeader>
+        <CardHeader className="p-2 bg-gradient-to-r from-pink-400 to-blue-500 text-white rounded-t-md">
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
+          <CardDescription className="text-xs md:text-sm  text-white/90">
             Enter your email and password below to login or use your social
             account
           </CardDescription>
@@ -296,107 +297,7 @@ export default function SignIn() {
               "w-full gap-2 flex items-center",
               "justify-between flex-wrap" // Allows buttons to wrap on smaller screens
             )}
-          >
-            {/* Google Button */}
-            <Button
-              variant="outline"
-              className={cn("flex-grow")} // Allows buttons to grow/shrink
-              disabled={loading}
-              onClick={() => handleSocialSignIn("google")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="0.98em"
-                height="1em"
-                viewBox="0 0 256 262"
-                className="mr-2"
-              >
-                <path
-                  fill="#4285F4"
-                  d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622l38.755 30.023l2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
-                ></path>
-                <path
-                  fill="#34A853"
-                  d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055c-34.523 0-63.824-22.773-74.269-54.25l-1.531.13l-40.298 31.187l-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
-                ></path>
-                <path
-                  fill="#FBBC05"
-                  d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82c0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602z"
-                ></path>
-                <path
-                  fill="#EB4335"
-                  d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
-                ></path>
-              </svg>
-              Google
-            </Button>
-
-            {/* Facebook Button */}
-            <Button
-              variant="outline"
-              className={cn("flex-grow")}
-              disabled={loading}
-              onClick={() => handleSocialSignIn("facebook")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-                className="mr-2"
-              >
-                <path
-                  d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8.615v-6.96h-2.338v-2.725h2.338v-2c0-2.325 1.42-3.592 3.5-3.592c.699-.002 1.399.034 2.095.107v2.42h-1.435c-1.128 0-1.348.538-1.348 1.325v1.735h2.697l-.35 2.725h-2.348V21H20a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-              Facebook
-            </Button>
-
-            {/* Microsoft Button */}
-            <Button
-              variant="outline"
-              className={cn("flex-grow")}
-              disabled={loading}
-              onClick={() => handleSocialSignIn("microsoft")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-                className="mr-2"
-              >
-                <path
-                  fill="currentColor"
-                  d="M2 3h9v9H2zm9 19H2v-9h9zM21 3v9h-9V3zm0 19h-9v-9h9z"
-                ></path>
-              </svg>
-              Microsoft
-            </Button>
-
-            {/* LinkedIn Button */}
-            <Button
-              variant="outline"
-              className={cn("flex-grow")}
-              disabled={loading}
-              onClick={() => handleSocialSignIn("linkedin")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-                className="mr-2"
-              >
-                <path
-                  fill="currentColor"
-                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"
-                ></path>
-              </svg>
-              LinkedIn
-            </Button>
-          </div>{" "}
+          ></div>{" "}
           {/* End Social Login Buttons Grid */}
         </CardContent>
         {/* Signup link footer */}

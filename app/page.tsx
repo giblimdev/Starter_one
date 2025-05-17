@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DevToDoList from "@/components/dev/DevToDoList";
-import { Rocket, Shield, Layout, Github } from "lucide-react"; // Import directly from lucide-react
+import { Rocket, Shield, Layout, Github } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export default function Home() {
@@ -26,9 +26,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="m-auto">
-        <p className="text-red-500">working on schema and forget pw</p>
-      </div>
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted">

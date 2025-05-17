@@ -3,11 +3,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
-//import { auth } from '@/lib/auth/auth';
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request, {});
-  console.log("Middleware - Session Cookie Value:", sessionCookie);
+  console.log("Middleware - Session Cookie Value:", sessionCookie); ///////////////////////////
 
   const { pathname } = request.nextUrl;
 

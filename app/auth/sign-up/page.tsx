@@ -1,4 +1,13 @@
+//@/app/auth/sign-up
+
 "use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Eye, EyeOff, Loader2, X } from "lucide-react";
+import { signUp } from "@/lib/auth/auth-client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,26 +20,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import Image from "next/image";
-import { Loader2, X, Eye, EyeOff } from "lucide-react"; // Added Eye and EyeOff icons
-import { signUp } from "@/lib/auth/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  // Add state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,66 +45,66 @@ export default function SignUp() {
     }
   };
 
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  // Toggle confirm password visibility
-  const toggleConfirmPasswordVisibility = () => {
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword);
+
+  const handleSignUp = async () => {
+    if (password !== passwordConfirmation) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    const imageBase64 = image ? await convertImageToBase64(image) : "";
+
+    await signUp.email({
+      email,
+      password,
+      name: ``,
+      image: imageBase64,
+      callbackURL: "/sign-in",
+      fetchOptions: {
+        onRequest: () => setLoading(true),
+        onResponse: () => setLoading(false),
+        onError: (ctx) => {
+          toast.error(ctx.error.message || "Something went wrong.");
+        },
+        onSuccess: () => {
+          toast("Account created!", {
+            description: "Redirecting to login page...",
+            duration: 3000,
+            action: { label: "OK", onClick: () => {} },
+          });
+          router.push("/auth/sign-in");
+        },
+      },
+    });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="z-50 rounded-md rounded-t-none max-w-md">
-        <CardHeader>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      <Card className=" rounded-md rounded-t-none max-w-md w-full p-0">
+        <CardHeader className="p-2 bg-gradient-to-r from-pink-400 to-blue-500 text-white rounded-t-md">
           <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
+          <CardDescription className="text-xs md:text-sm text-white/90">
             Enter your information to create an account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="first-name">First name</Label>
-                <Input
-                  id="first-name"
-                  placeholder="Max"
-                  required
-                  onChange={(e) => {
-                    setFirstName(e.target.value);
-                  }}
-                  value={firstName}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <Input
-                  id="last-name"
-                  placeholder="Robinson"
-                  required
-                  onChange={(e) => {
-                    setLastName(e.target.value);
-                  }}
-                  value={lastName}
-                />
-              </div>
-            </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                required
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
                 value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -114,15 +115,17 @@ export default function SignUp() {
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                   placeholder="Password"
+                  required
                 />
                 <div
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
                   onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </div>
               </div>
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="password_confirmation">Confirm Password</Label>
               <div className="relative">
@@ -133,10 +136,11 @@ export default function SignUp() {
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   autoComplete="new-password"
                   placeholder="Confirm Password"
+                  required
                 />
                 <div
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
                   onClick={toggleConfirmPasswordVisibility}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
                 >
                   {showConfirmPassword ? (
                     <EyeOff size={18} />
@@ -146,16 +150,17 @@ export default function SignUp() {
                 </div>
               </div>
             </div>
+
             <div className="grid gap-2">
               <Label htmlFor="image">Profile Image (optional)</Label>
               <div className="flex items-end gap-4">
                 {imagePreview && (
-                  <div className="relative w-16 h-16 rounded-sm overflow-hidden">
+                  <div className="relative w-16 h-16 rounded overflow-hidden">
                     <Image
                       src={imagePreview}
                       alt="Profile preview"
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                 )}
@@ -179,47 +184,26 @@ export default function SignUp() {
                 </div>
               </div>
             </div>
+
             <Button
               type="submit"
               className="w-full"
+              onClick={handleSignUp}
               disabled={loading}
-              onClick={async () => {
-                await signUp.email({
-                  email,
-                  password,
-                  name: `${firstName} ${lastName}`,
-                  image: image ? await convertImageToBase64(image) : "",
-                  callbackURL: "/sign-in",
-                  fetchOptions: {
-                    onResponse: () => {
-                      setLoading(false);
-                    },
-                    onRequest: () => {
-                      setLoading(true);
-                    },
-                    onError: (ctx) => {
-                      toast.error(ctx.error.message);
-                    },
-                    onSuccess: async () => {
-                      router.push("sign-in");
-                      toast.success("Account created successfully!");
-                    },
-                  },
-                });
-              }}
             >
               {loading ? (
-                <Loader2 size={16} className="animate-spin" />
+                <Loader2 className="animate-spin" size={18} />
               ) : (
                 "Create an account"
               )}
             </Button>
           </div>
         </CardContent>
+
         <CardFooter>
           <div className="flex justify-center w-full border-t py-4">
             <p className="text-center text-xs text-neutral-500">
-              Secured by <span className="text-orange-400">better-auth.</span>
+              Secured by <span className="text-orange-400">better-auth</span>.
             </p>
           </div>
         </CardFooter>

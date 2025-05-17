@@ -136,7 +136,7 @@ function InfoConnect() {
             </div>
             <div className="mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left">
               <h2 className="text-2xl font-bold text-white">
-                {session.user?.name?.trim() || "User"}
+                {session.user?.name?.trim() || "pseudo"}
               </h2>
               <p className="text-indigo-100">
                 {session.user?.email || "Email not available"}

@@ -25,28 +25,6 @@ enum Status {
   CANCELLED // Tâche/projet/sprint annulé
 }
 
-enum FileType {
-  DOCUMENT // Fichier de type document (ex. PDF, Word)
-  IMAGE // Fichier de type image (ex. JPG, PNG)
-  SPREADSHEET // Fichier de type tableur (ex. Excel)
-  PRESENTATION // Fichier de type présentation (ex. PowerPoint)
-  ARCHIVE // Fichier de type archive (ex. ZIP)
-  CODE // Fichier de type code source
-  OTHER // Autre type de fichier
-}
-
-enum ActionType {
-  CREATE // Action de création
-  UPDATE // Action de mise à jour
-  DELETE // Action de suppression
-}
-
-enum RelationType {
-  IMPORT // Importation d'un fichier (ex. import dans du code)
-  REFERENCE // Référence à un fichier (ex. lien logique)
-  OTHER // Autre type de relation
-}
-
 model User {
   id            String   @id @default(uuid()) // Identifiant unique de l'utilisateur
   name          String? // Nom de l'utilisateur (optionnel)
@@ -60,7 +38,6 @@ model User {
 
   sessions      Session[] // Sessions actives de l'utilisateur
   accounts      Account[] // Comptes d'authentification liés
-  memberships   Member[] // Projets auxquels l'utilisateur est membre
   verifications Verification[] // Vérifications associées à l'utilisateur
   Profile       Profile[]
 
@@ -130,10 +107,27 @@ model Profile {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String       @unique
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ProfilePro ProfilePro[]
 
   @@map("profiles")
+}
+
+model ProfilePro {
+  id             String   @id @default(uuid())
+  profileId      String   @unique
+  organizationId String
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  profile      Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teams        OrganizationTeam[] @relation("TeamMembers")
+  projects     Project[]          @relation("ProjectMembers")
+
+  @@unique([profileId, organizationId])
+  @@map("profile_pros")
 }
 
 model Organization {
@@ -143,30 +137,14 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  members  Member[]
-  teams    Team[]
+  members  ProfilePro[]
+  teams    OrganizationTeam[]
   projects Project[]
 
   @@map("organizations")
 }
 
-model Member {
-  id             String       @id @default(uuid())
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String       @unique
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  joinedAt       DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-
-  teams    Team[]    @relation("TeamMembers")
-  projects Project[] @relation("ProjectMembers")
-
-  @@unique([userId, organizationId])
-  @@map("members")
-}
-
-model Team {
+model OrganizationTeam {
   id          String   @id @default(uuid())
   name        String
   description String?
@@ -176,7 +154,7 @@ model Team {
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  members        Member[]     @relation("TeamMembers")
+  members        ProfilePro[] @relation("TeamMembers")
 
   @@map("teams")
 }
@@ -198,7 +176,7 @@ model Project {
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  members        Member[]     @relation("ProjectMembers")
+  members        ProfilePro[] @relation("ProjectMembers")
 
   @@index([name])
   @@map("projects")

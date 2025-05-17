@@ -1,0 +1,150 @@
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Styles -->
+  <style>
+    .table-box { fill: #f9fafb; stroke: #4b5563; stroke-width: 2; }
+    .table-header { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1f2937; }
+    .table-field { font-family: Arial, sans-serif; font-size: 12px; fill: #4b5563; }
+    .arrow { stroke: #6b7280; stroke-width: 2; marker-end: url(#arrowhead); }
+    .arrow-label { font-family: Arial, sans-serif; font-size: 12px; fill: #374151; }
+    .user { stroke: #3b82f6; }
+    .session { stroke: #10b981; }
+    .account { stroke: #f59e0b; }
+    .verification { stroke: #8b5cf6; }
+    .profile { stroke: #ec4899; }
+    .profilepro { stroke: #6366f1; }
+    .organization { stroke: #ef4444; }
+    .team { stroke: #14b8a6; }
+    .project { stroke: #f97316; }
+  </style>
+
+  <!-- Arrowhead Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
+    </marker>
+  </defs>
+
+  <!-- Tables -->
+  <!-- User -->
+  <g transform="translate(50, 50)">
+    <rect width="200" height="200" rx="10" class="table-box user" />
+    <text x="10" y="30" class="table-header">User</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">email: String? @unique</text>
+    <text x="10" y="90" class="table-field">role: Role</text>
+    <text x="10" y="110" class="table-field">createdAt: DateTime</text>
+  </g>
+
+  <!-- Session -->
+  <g transform="translate(300, 50)">
+    <rect width="200" height="160" rx="10" class="table-box session" />
+    <text x="10" y="30" class="table-header">Session</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">userId: String</text>
+    <text x="10" y="90" class="table-field">token: String @unique</text>
+  </g>
+
+  <!-- Account -->
+  <g transform="translate(550, 50)">
+    <rect width="200" height="160" rx="10" class="table-box account" />
+    <text x="10" y="30" class="table-header">Account</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">userId: String</text>
+    <text x="10" y="90" class="table-field">providerId: String</text>
+  </g>
+
+  <!-- Verification -->
+  <g transform="translate(800, 50)">
+    <rect width="200" height="160" rx="10" class="table-box verification" />
+    <text x="10" y="30" class="table-header">Verification</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">userId: String</text>
+    <text x="10" y="90" class="table-field">identifier: String</text>
+  </g>
+
+  <!-- Profile -->
+  <g transform="translate(50, 300)">
+    <rect width="200" height="160" rx="10" class="table-box profile" />
+    <text x="10" y="30" class="table-header">Profile</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">userId: String @unique</text>
+    <text x="10" y="90" class="table-field">firstName: String</text>
+  </g>
+
+  <!-- ProfilePro -->
+  <g transform="translate(300, 300)">
+    <rect width="200" height="160" rx="10" class="table-box profilepro" />
+    <text x="10" y="30" class="table-header">ProfilePro</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">profileId: String @unique</text>
+    <text x="10" y="90" class="table-field">organizationId: String</text>
+  </g>
+
+  <!-- Organization -->
+  <g transform="translate(550, 300)">
+    <rect width="200" height="160" rx="10" class="table-box organization" />
+    <text x="10" y="30" class="table-header">Organization</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">name: String</text>
+    <text x="10" y="90" class="table-field">slug: String @unique</text>
+  </g>
+
+  <!-- OrganizationTeam -->
+  <g transform="translate(800, 300)">
+    <rect width="200" height="160" rx="10" class="table-box team" />
+    <text x="10" y="30" class="table-header">OrganizationTeam</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">organizationId: String</text>
+    <text x="10" y="90" class="table-field">name: String</text>
+  </g>
+
+  <!-- Project -->
+  <g transform="translate(300, 500)">
+    <rect width="200" height="160" rx="10" class="table-box project" />
+    <text x="10" y="30" class="table-header">Project</text>
+    <text x="10" y="50" class="table-field">id: String @id</text>
+    <text x="10" y="70" class="table-field">organizationId: String</text>
+    <text x="10" y="90" class="table-field">name: String</text>
+  </g>
+
+  <!-- Relationships -->
+  <!-- User to Session (1:N) -->
+  <path d="M250,150 H280" class="arrow" />
+  <text x="260" y="140" class="arrow-label">1:N</text>
+
+  <!-- User to Account (1:N) -->
+  <path d="M250,170 H500" class="arrow" />
+  <text x="350" y="160" class="arrow-label">1:N</text>
+
+  <!-- User to Verification (1:N) -->
+  <path d="M250,190 H750" class="arrow" />
+  <text x="450" y="180" class="arrow-label">1:N</text>
+
+  <!-- User to Profile (1:1) -->
+  <path d="M150,250 V280" class="arrow" />
+  <text x="160" y="270" class="arrow-label">1:1</text>
+
+  <!-- Profile to ProfilePro (1:N) -->
+  <path d="M250,400 H280" class="arrow" />
+  <text x="260" y="390" class="arrow-label">1:N</text>
+
+  <!-- ProfilePro to Organization (N:1) -->
+  <path d="M500,400 H520" class="arrow" />
+  <text x="510" y="390" class="arrow-label">N:1</text>
+
+  <!-- Organization to OrganizationTeam (1:N) -->
+  <path d="M750,400 H780" class="arrow" />
+  <text x="760" y="390" class="arrow-label">1:N</text>
+
+  <!-- Organization to Project (1:N) -->
+  <path d="M650,460 V480" class="arrow" />
+  <text x="660" y="470" class="arrow-label">1:N</text>
+
+  <!-- ProfilePro to OrganizationTeam (N:N) -->
+  <path d="M400,460 V480 H780" class="arrow" />
+  <text x="500" y="470" class="arrow-label">N:N</text>
+
+  <!-- ProfilePro to Project (N:N) -->
+  <path d="M400,460 V480" class="arrow" />
+  <text x="410" y="470" class="arrow-label">N:N</text>
+</svg>
