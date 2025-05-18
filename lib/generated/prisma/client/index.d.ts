@@ -49,11 +49,6 @@ export type ProfilePro = $Result.DefaultSelection<Prisma.$ProfileProPayload>
  */
 export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
 /**
- * Model OrganizationTeam
- * 
- */
-export type OrganizationTeam = $Result.DefaultSelection<Prisma.$OrganizationTeamPayload>
-/**
  * Model Project
  * 
  */
@@ -273,16 +268,6 @@ export class PrismaClient<
     * ```
     */
   get organization(): Prisma.OrganizationDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.organizationTeam`: Exposes CRUD operations for the **OrganizationTeam** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more OrganizationTeams
-    * const organizationTeams = await prisma.organizationTeam.findMany()
-    * ```
-    */
-  get organizationTeam(): Prisma.OrganizationTeamDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.project`: Exposes CRUD operations for the **Project** model.
@@ -740,7 +725,6 @@ export namespace Prisma {
     Profile: 'Profile',
     ProfilePro: 'ProfilePro',
     Organization: 'Organization',
-    OrganizationTeam: 'OrganizationTeam',
     Project: 'Project'
   };
 
@@ -760,7 +744,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "profile" | "profilePro" | "organization" | "organizationTeam" | "project"
+      modelProps: "user" | "session" | "account" | "verification" | "profile" | "profilePro" | "organization" | "project"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1282,80 +1266,6 @@ export namespace Prisma {
           }
         }
       }
-      OrganizationTeam: {
-        payload: Prisma.$OrganizationTeamPayload<ExtArgs>
-        fields: Prisma.OrganizationTeamFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.OrganizationTeamFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.OrganizationTeamFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          findFirst: {
-            args: Prisma.OrganizationTeamFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.OrganizationTeamFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          findMany: {
-            args: Prisma.OrganizationTeamFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>[]
-          }
-          create: {
-            args: Prisma.OrganizationTeamCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          createMany: {
-            args: Prisma.OrganizationTeamCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.OrganizationTeamCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>[]
-          }
-          delete: {
-            args: Prisma.OrganizationTeamDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          update: {
-            args: Prisma.OrganizationTeamUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          deleteMany: {
-            args: Prisma.OrganizationTeamDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.OrganizationTeamUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.OrganizationTeamUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>[]
-          }
-          upsert: {
-            args: Prisma.OrganizationTeamUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationTeamPayload>
-          }
-          aggregate: {
-            args: Prisma.OrganizationTeamAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrganizationTeam>
-          }
-          groupBy: {
-            args: Prisma.OrganizationTeamGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationTeamGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.OrganizationTeamCountArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationTeamCountAggregateOutputType> | number
-          }
-        }
-      }
       Project: {
         payload: Prisma.$ProjectPayload<ExtArgs>
         fields: Prisma.ProjectFieldRefs
@@ -1521,7 +1431,6 @@ export namespace Prisma {
     profile?: ProfileOmit
     profilePro?: ProfileProOmit
     organization?: OrganizationOmit
-    organizationTeam?: OrganizationTeamOmit
     project?: ProjectOmit
   }
 
@@ -1666,11 +1575,11 @@ export namespace Prisma {
    */
 
   export type ProfileCountOutputType = {
-    ProfilePro: number
+    profilePros: number
   }
 
   export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    ProfilePro?: boolean | ProfileCountOutputTypeCountProfileProArgs
+    profilePros?: boolean | ProfileCountOutputTypeCountProfileProsArgs
   }
 
   // Custom InputTypes
@@ -1687,7 +1596,7 @@ export namespace Prisma {
   /**
    * ProfileCountOutputType without action
    */
-  export type ProfileCountOutputTypeCountProfileProArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProfileCountOutputTypeCountProfileProsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProfileProWhereInput
   }
 
@@ -1697,12 +1606,14 @@ export namespace Prisma {
    */
 
   export type ProfileProCountOutputType = {
-    teams: number
+    organizations: number
+    organizationsOwned: number
     projects: number
   }
 
   export type ProfileProCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    teams?: boolean | ProfileProCountOutputTypeCountTeamsArgs
+    organizations?: boolean | ProfileProCountOutputTypeCountOrganizationsArgs
+    organizationsOwned?: boolean | ProfileProCountOutputTypeCountOrganizationsOwnedArgs
     projects?: boolean | ProfileProCountOutputTypeCountProjectsArgs
   }
 
@@ -1720,8 +1631,15 @@ export namespace Prisma {
   /**
    * ProfileProCountOutputType without action
    */
-  export type ProfileProCountOutputTypeCountTeamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationTeamWhereInput
+  export type ProfileProCountOutputTypeCountOrganizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationWhereInput
+  }
+
+  /**
+   * ProfileProCountOutputType without action
+   */
+  export type ProfileProCountOutputTypeCountOrganizationsOwnedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationWhereInput
   }
 
   /**
@@ -1737,14 +1655,12 @@ export namespace Prisma {
    */
 
   export type OrganizationCountOutputType = {
-    members: number
-    teams: number
+    profilePros: number
     projects: number
   }
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
-    teams?: boolean | OrganizationCountOutputTypeCountTeamsArgs
+    profilePros?: boolean | OrganizationCountOutputTypeCountProfileProsArgs
     projects?: boolean | OrganizationCountOutputTypeCountProjectsArgs
   }
 
@@ -1762,15 +1678,8 @@ export namespace Prisma {
   /**
    * OrganizationCountOutputType without action
    */
-  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OrganizationCountOutputTypeCountProfileProsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProfileProWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountTeamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationTeamWhereInput
   }
 
   /**
@@ -1778,37 +1687,6 @@ export namespace Prisma {
    */
   export type OrganizationCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
-  }
-
-
-  /**
-   * Count Type OrganizationTeamCountOutputType
-   */
-
-  export type OrganizationTeamCountOutputType = {
-    members: number
-  }
-
-  export type OrganizationTeamCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | OrganizationTeamCountOutputTypeCountMembersArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * OrganizationTeamCountOutputType without action
-   */
-  export type OrganizationTeamCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeamCountOutputType
-     */
-    select?: OrganizationTeamCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * OrganizationTeamCountOutputType without action
-   */
-  export type OrganizationTeamCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProfileProWhereInput
   }
 
 
@@ -6585,7 +6463,7 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    ProfilePro?: boolean | Profile$ProfileProArgs<ExtArgs>
+    profilePros?: boolean | Profile$profileProsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
@@ -6627,7 +6505,7 @@ export namespace Prisma {
   export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "dateOfBirth" | "languagePreferred" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    ProfilePro?: boolean | Profile$ProfileProArgs<ExtArgs>
+    profilePros?: boolean | Profile$profileProsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6641,7 +6519,7 @@ export namespace Prisma {
     name: "Profile"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      ProfilePro: Prisma.$ProfileProPayload<ExtArgs>[]
+      profilePros: Prisma.$ProfileProPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7047,7 +6925,7 @@ export namespace Prisma {
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    ProfilePro<T extends Profile$ProfileProArgs<ExtArgs> = {}>(args?: Subset<T, Profile$ProfileProArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profilePros<T extends Profile$profileProsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$profileProsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7479,9 +7357,9 @@ export namespace Prisma {
   }
 
   /**
-   * Profile.ProfilePro
+   * Profile.profilePros
    */
-  export type Profile$ProfileProArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Profile$profileProsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ProfilePro
      */
@@ -7534,21 +7412,18 @@ export namespace Prisma {
   export type ProfileProMinAggregateOutputType = {
     id: string | null
     profileId: string | null
-    organizationId: string | null
     updatedAt: Date | null
   }
 
   export type ProfileProMaxAggregateOutputType = {
     id: string | null
     profileId: string | null
-    organizationId: string | null
     updatedAt: Date | null
   }
 
   export type ProfileProCountAggregateOutputType = {
     id: number
     profileId: number
-    organizationId: number
     updatedAt: number
     _all: number
   }
@@ -7557,21 +7432,18 @@ export namespace Prisma {
   export type ProfileProMinAggregateInputType = {
     id?: true
     profileId?: true
-    organizationId?: true
     updatedAt?: true
   }
 
   export type ProfileProMaxAggregateInputType = {
     id?: true
     profileId?: true
-    organizationId?: true
     updatedAt?: true
   }
 
   export type ProfileProCountAggregateInputType = {
     id?: true
     profileId?: true
-    organizationId?: true
     updatedAt?: true
     _all?: true
   }
@@ -7651,7 +7523,6 @@ export namespace Prisma {
   export type ProfileProGroupByOutputType = {
     id: string
     profileId: string
-    organizationId: string
     updatedAt: Date
     _count: ProfileProCountAggregateOutputType | null
     _min: ProfileProMinAggregateOutputType | null
@@ -7675,11 +7546,10 @@ export namespace Prisma {
   export type ProfileProSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
-    organizationId?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    teams?: boolean | ProfilePro$teamsArgs<ExtArgs>
+    organizations?: boolean | ProfilePro$organizationsArgs<ExtArgs>
+    organizationsOwned?: boolean | ProfilePro$organizationsOwnedArgs<ExtArgs>
     projects?: boolean | ProfilePro$projectsArgs<ExtArgs>
     _count?: boolean | ProfileProCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profilePro"]>
@@ -7687,57 +7557,49 @@ export namespace Prisma {
   export type ProfileProSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
-    organizationId?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profilePro"]>
 
   export type ProfileProSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
-    organizationId?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profilePro"]>
 
   export type ProfileProSelectScalar = {
     id?: boolean
     profileId?: boolean
-    organizationId?: boolean
     updatedAt?: boolean
   }
 
-  export type ProfileProOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "organizationId" | "updatedAt", ExtArgs["result"]["profilePro"]>
+  export type ProfileProOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "updatedAt", ExtArgs["result"]["profilePro"]>
   export type ProfileProInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    teams?: boolean | ProfilePro$teamsArgs<ExtArgs>
+    organizations?: boolean | ProfilePro$organizationsArgs<ExtArgs>
+    organizationsOwned?: boolean | ProfilePro$organizationsOwnedArgs<ExtArgs>
     projects?: boolean | ProfilePro$projectsArgs<ExtArgs>
     _count?: boolean | ProfileProCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfileProIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
   export type ProfileProIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
 
   export type $ProfileProPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProfilePro"
     objects: {
       profile: Prisma.$ProfilePayload<ExtArgs>
-      organization: Prisma.$OrganizationPayload<ExtArgs>
-      teams: Prisma.$OrganizationTeamPayload<ExtArgs>[]
+      organizations: Prisma.$OrganizationPayload<ExtArgs>[]
+      organizationsOwned: Prisma.$OrganizationPayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       profileId: string
-      organizationId: string
       updatedAt: Date
     }, ExtArgs["result"]["profilePro"]>
     composites: {}
@@ -8134,8 +7996,8 @@ export namespace Prisma {
   export interface Prisma__ProfileProClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    teams<T extends ProfilePro$teamsArgs<ExtArgs> = {}>(args?: Subset<T, ProfilePro$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    organizations<T extends ProfilePro$organizationsArgs<ExtArgs> = {}>(args?: Subset<T, ProfilePro$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    organizationsOwned<T extends ProfilePro$organizationsOwnedArgs<ExtArgs> = {}>(args?: Subset<T, ProfilePro$organizationsOwnedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends ProfilePro$projectsArgs<ExtArgs> = {}>(args?: Subset<T, ProfilePro$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8168,7 +8030,6 @@ export namespace Prisma {
   interface ProfileProFieldRefs {
     readonly id: FieldRef<"ProfilePro", 'String'>
     readonly profileId: FieldRef<"ProfilePro", 'String'>
-    readonly organizationId: FieldRef<"ProfilePro", 'String'>
     readonly updatedAt: FieldRef<"ProfilePro", 'DateTime'>
   }
     
@@ -8564,27 +8425,51 @@ export namespace Prisma {
   }
 
   /**
-   * ProfilePro.teams
+   * ProfilePro.organizations
    */
-  export type ProfilePro$teamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProfilePro$organizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationTeam
+     * Select specific fields to fetch from the Organization
      */
-    select?: OrganizationTeamSelect<ExtArgs> | null
+    select?: OrganizationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationTeam
+     * Omit specific fields from the Organization
      */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
+    omit?: OrganizationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    where?: OrganizationTeamWhereInput
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    cursor?: OrganizationTeamWhereUniqueInput
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    cursor?: OrganizationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: OrganizationTeamScalarFieldEnum | OrganizationTeamScalarFieldEnum[]
+    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+  }
+
+  /**
+   * ProfilePro.organizationsOwned
+   */
+  export type ProfilePro$organizationsOwnedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    cursor?: OrganizationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
   }
 
   /**
@@ -8644,6 +8529,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    ownerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8652,6 +8538,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     slug: string | null
+    ownerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8660,6 +8547,7 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
+    ownerId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8670,6 +8558,7 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    ownerId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8678,6 +8567,7 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    ownerId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8686,6 +8576,7 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
+    ownerId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8767,6 +8658,7 @@ export namespace Prisma {
     id: string
     name: string
     slug: string
+    ownerId: string
     createdAt: Date
     updatedAt: Date
     _count: OrganizationCountAggregateOutputType | null
@@ -8792,10 +8684,11 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    members?: boolean | Organization$membersArgs<ExtArgs>
-    teams?: boolean | Organization$teamsArgs<ExtArgs>
+    profilePros?: boolean | Organization$profileProsArgs<ExtArgs>
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
     projects?: boolean | Organization$projectsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
@@ -8804,47 +8697,57 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
+    ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
   export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     slug?: boolean
+    ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
   export type OrganizationSelectScalar = {
     id?: boolean
     name?: boolean
     slug?: boolean
+    ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
   export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | Organization$membersArgs<ExtArgs>
-    teams?: boolean | Organization$teamsArgs<ExtArgs>
+    profilePros?: boolean | Organization$profileProsArgs<ExtArgs>
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
     projects?: boolean | Organization$projectsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type OrganizationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
+  }
+  export type OrganizationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | ProfileProDefaultArgs<ExtArgs>
+  }
 
   export type $OrganizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Organization"
     objects: {
-      members: Prisma.$ProfileProPayload<ExtArgs>[]
-      teams: Prisma.$OrganizationTeamPayload<ExtArgs>[]
+      profilePros: Prisma.$ProfileProPayload<ExtArgs>[]
+      owner: Prisma.$ProfileProPayload<ExtArgs>
       projects: Prisma.$ProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       slug: string
+      ownerId: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["organization"]>
@@ -9241,8 +9144,8 @@ export namespace Prisma {
    */
   export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    teams<T extends Organization$teamsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$teamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profilePros<T extends Organization$profileProsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$profileProsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    owner<T extends ProfileProDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileProDefaultArgs<ExtArgs>>): Prisma__ProfileProClient<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projects<T extends Organization$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9276,6 +9179,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Organization", 'String'>
     readonly name: FieldRef<"Organization", 'String'>
     readonly slug: FieldRef<"Organization", 'String'>
+    readonly ownerId: FieldRef<"Organization", 'String'>
     readonly createdAt: FieldRef<"Organization", 'DateTime'>
     readonly updatedAt: FieldRef<"Organization", 'DateTime'>
   }
@@ -9525,6 +9429,10 @@ export namespace Prisma {
      * The data used to create many Organizations.
      */
     data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9595,6 +9503,10 @@ export namespace Prisma {
      * Limit how many Organizations to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9664,9 +9576,9 @@ export namespace Prisma {
   }
 
   /**
-   * Organization.members
+   * Organization.profilePros
    */
-  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Organization$profileProsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ProfilePro
      */
@@ -9685,30 +9597,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProfileProScalarFieldEnum | ProfileProScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.teams
-   */
-  export type Organization$teamsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    where?: OrganizationTeamWhereInput
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    cursor?: OrganizationTeamWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrganizationTeamScalarFieldEnum | OrganizationTeamScalarFieldEnum[]
   }
 
   /**
@@ -9751,1152 +9639,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrganizationInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model OrganizationTeam
-   */
-
-  export type AggregateOrganizationTeam = {
-    _count: OrganizationTeamCountAggregateOutputType | null
-    _avg: OrganizationTeamAvgAggregateOutputType | null
-    _sum: OrganizationTeamSumAggregateOutputType | null
-    _min: OrganizationTeamMinAggregateOutputType | null
-    _max: OrganizationTeamMaxAggregateOutputType | null
-  }
-
-  export type OrganizationTeamAvgAggregateOutputType = {
-    order: number | null
-  }
-
-  export type OrganizationTeamSumAggregateOutputType = {
-    order: number | null
-  }
-
-  export type OrganizationTeamMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    description: string | null
-    order: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    organizationId: string | null
-  }
-
-  export type OrganizationTeamMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    description: string | null
-    order: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    organizationId: string | null
-  }
-
-  export type OrganizationTeamCountAggregateOutputType = {
-    id: number
-    name: number
-    description: number
-    order: number
-    createdAt: number
-    updatedAt: number
-    organizationId: number
-    _all: number
-  }
-
-
-  export type OrganizationTeamAvgAggregateInputType = {
-    order?: true
-  }
-
-  export type OrganizationTeamSumAggregateInputType = {
-    order?: true
-  }
-
-  export type OrganizationTeamMinAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    order?: true
-    createdAt?: true
-    updatedAt?: true
-    organizationId?: true
-  }
-
-  export type OrganizationTeamMaxAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    order?: true
-    createdAt?: true
-    updatedAt?: true
-    organizationId?: true
-  }
-
-  export type OrganizationTeamCountAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    order?: true
-    createdAt?: true
-    updatedAt?: true
-    organizationId?: true
-    _all?: true
-  }
-
-  export type OrganizationTeamAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which OrganizationTeam to aggregate.
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrganizationTeams to fetch.
-     */
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: OrganizationTeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrganizationTeams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrganizationTeams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned OrganizationTeams
-    **/
-    _count?: true | OrganizationTeamCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: OrganizationTeamAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: OrganizationTeamSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: OrganizationTeamMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: OrganizationTeamMaxAggregateInputType
-  }
-
-  export type GetOrganizationTeamAggregateType<T extends OrganizationTeamAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrganizationTeam]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateOrganizationTeam[P]>
-      : GetScalarType<T[P], AggregateOrganizationTeam[P]>
-  }
-
-
-
-
-  export type OrganizationTeamGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationTeamWhereInput
-    orderBy?: OrganizationTeamOrderByWithAggregationInput | OrganizationTeamOrderByWithAggregationInput[]
-    by: OrganizationTeamScalarFieldEnum[] | OrganizationTeamScalarFieldEnum
-    having?: OrganizationTeamScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: OrganizationTeamCountAggregateInputType | true
-    _avg?: OrganizationTeamAvgAggregateInputType
-    _sum?: OrganizationTeamSumAggregateInputType
-    _min?: OrganizationTeamMinAggregateInputType
-    _max?: OrganizationTeamMaxAggregateInputType
-  }
-
-  export type OrganizationTeamGroupByOutputType = {
-    id: string
-    name: string
-    description: string | null
-    order: number
-    createdAt: Date
-    updatedAt: Date
-    organizationId: string
-    _count: OrganizationTeamCountAggregateOutputType | null
-    _avg: OrganizationTeamAvgAggregateOutputType | null
-    _sum: OrganizationTeamSumAggregateOutputType | null
-    _min: OrganizationTeamMinAggregateOutputType | null
-    _max: OrganizationTeamMaxAggregateOutputType | null
-  }
-
-  type GetOrganizationTeamGroupByPayload<T extends OrganizationTeamGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<OrganizationTeamGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof OrganizationTeamGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], OrganizationTeamGroupByOutputType[P]>
-            : GetScalarType<T[P], OrganizationTeamGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type OrganizationTeamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    order?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    organizationId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    members?: boolean | OrganizationTeam$membersArgs<ExtArgs>
-    _count?: boolean | OrganizationTeamCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organizationTeam"]>
-
-  export type OrganizationTeamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    order?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    organizationId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organizationTeam"]>
-
-  export type OrganizationTeamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    order?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    organizationId?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organizationTeam"]>
-
-  export type OrganizationTeamSelectScalar = {
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    order?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    organizationId?: boolean
-  }
-
-  export type OrganizationTeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "createdAt" | "updatedAt" | "organizationId", ExtArgs["result"]["organizationTeam"]>
-  export type OrganizationTeamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    members?: boolean | OrganizationTeam$membersArgs<ExtArgs>
-    _count?: boolean | OrganizationTeamCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type OrganizationTeamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }
-  export type OrganizationTeamIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }
-
-  export type $OrganizationTeamPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "OrganizationTeam"
-    objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
-      members: Prisma.$ProfileProPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      description: string | null
-      order: number
-      createdAt: Date
-      updatedAt: Date
-      organizationId: string
-    }, ExtArgs["result"]["organizationTeam"]>
-    composites: {}
-  }
-
-  type OrganizationTeamGetPayload<S extends boolean | null | undefined | OrganizationTeamDefaultArgs> = $Result.GetResult<Prisma.$OrganizationTeamPayload, S>
-
-  type OrganizationTeamCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrganizationTeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrganizationTeamCountAggregateInputType | true
-    }
-
-  export interface OrganizationTeamDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrganizationTeam'], meta: { name: 'OrganizationTeam' } }
-    /**
-     * Find zero or one OrganizationTeam that matches the filter.
-     * @param {OrganizationTeamFindUniqueArgs} args - Arguments to find a OrganizationTeam
-     * @example
-     * // Get one OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends OrganizationTeamFindUniqueArgs>(args: SelectSubset<T, OrganizationTeamFindUniqueArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one OrganizationTeam that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {OrganizationTeamFindUniqueOrThrowArgs} args - Arguments to find a OrganizationTeam
-     * @example
-     * // Get one OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends OrganizationTeamFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationTeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first OrganizationTeam that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamFindFirstArgs} args - Arguments to find a OrganizationTeam
-     * @example
-     * // Get one OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends OrganizationTeamFindFirstArgs>(args?: SelectSubset<T, OrganizationTeamFindFirstArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first OrganizationTeam that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamFindFirstOrThrowArgs} args - Arguments to find a OrganizationTeam
-     * @example
-     * // Get one OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends OrganizationTeamFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationTeamFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more OrganizationTeams that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all OrganizationTeams
-     * const organizationTeams = await prisma.organizationTeam.findMany()
-     * 
-     * // Get first 10 OrganizationTeams
-     * const organizationTeams = await prisma.organizationTeam.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const organizationTeamWithIdOnly = await prisma.organizationTeam.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends OrganizationTeamFindManyArgs>(args?: SelectSubset<T, OrganizationTeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a OrganizationTeam.
-     * @param {OrganizationTeamCreateArgs} args - Arguments to create a OrganizationTeam.
-     * @example
-     * // Create one OrganizationTeam
-     * const OrganizationTeam = await prisma.organizationTeam.create({
-     *   data: {
-     *     // ... data to create a OrganizationTeam
-     *   }
-     * })
-     * 
-     */
-    create<T extends OrganizationTeamCreateArgs>(args: SelectSubset<T, OrganizationTeamCreateArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many OrganizationTeams.
-     * @param {OrganizationTeamCreateManyArgs} args - Arguments to create many OrganizationTeams.
-     * @example
-     * // Create many OrganizationTeams
-     * const organizationTeam = await prisma.organizationTeam.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends OrganizationTeamCreateManyArgs>(args?: SelectSubset<T, OrganizationTeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many OrganizationTeams and returns the data saved in the database.
-     * @param {OrganizationTeamCreateManyAndReturnArgs} args - Arguments to create many OrganizationTeams.
-     * @example
-     * // Create many OrganizationTeams
-     * const organizationTeam = await prisma.organizationTeam.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many OrganizationTeams and only return the `id`
-     * const organizationTeamWithIdOnly = await prisma.organizationTeam.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends OrganizationTeamCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationTeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a OrganizationTeam.
-     * @param {OrganizationTeamDeleteArgs} args - Arguments to delete one OrganizationTeam.
-     * @example
-     * // Delete one OrganizationTeam
-     * const OrganizationTeam = await prisma.organizationTeam.delete({
-     *   where: {
-     *     // ... filter to delete one OrganizationTeam
-     *   }
-     * })
-     * 
-     */
-    delete<T extends OrganizationTeamDeleteArgs>(args: SelectSubset<T, OrganizationTeamDeleteArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one OrganizationTeam.
-     * @param {OrganizationTeamUpdateArgs} args - Arguments to update one OrganizationTeam.
-     * @example
-     * // Update one OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends OrganizationTeamUpdateArgs>(args: SelectSubset<T, OrganizationTeamUpdateArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more OrganizationTeams.
-     * @param {OrganizationTeamDeleteManyArgs} args - Arguments to filter OrganizationTeams to delete.
-     * @example
-     * // Delete a few OrganizationTeams
-     * const { count } = await prisma.organizationTeam.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends OrganizationTeamDeleteManyArgs>(args?: SelectSubset<T, OrganizationTeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more OrganizationTeams.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many OrganizationTeams
-     * const organizationTeam = await prisma.organizationTeam.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends OrganizationTeamUpdateManyArgs>(args: SelectSubset<T, OrganizationTeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more OrganizationTeams and returns the data updated in the database.
-     * @param {OrganizationTeamUpdateManyAndReturnArgs} args - Arguments to update many OrganizationTeams.
-     * @example
-     * // Update many OrganizationTeams
-     * const organizationTeam = await prisma.organizationTeam.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more OrganizationTeams and only return the `id`
-     * const organizationTeamWithIdOnly = await prisma.organizationTeam.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends OrganizationTeamUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganizationTeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one OrganizationTeam.
-     * @param {OrganizationTeamUpsertArgs} args - Arguments to update or create a OrganizationTeam.
-     * @example
-     * // Update or create a OrganizationTeam
-     * const organizationTeam = await prisma.organizationTeam.upsert({
-     *   create: {
-     *     // ... data to create a OrganizationTeam
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the OrganizationTeam we want to update
-     *   }
-     * })
-     */
-    upsert<T extends OrganizationTeamUpsertArgs>(args: SelectSubset<T, OrganizationTeamUpsertArgs<ExtArgs>>): Prisma__OrganizationTeamClient<$Result.GetResult<Prisma.$OrganizationTeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of OrganizationTeams.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamCountArgs} args - Arguments to filter OrganizationTeams to count.
-     * @example
-     * // Count the number of OrganizationTeams
-     * const count = await prisma.organizationTeam.count({
-     *   where: {
-     *     // ... the filter for the OrganizationTeams we want to count
-     *   }
-     * })
-    **/
-    count<T extends OrganizationTeamCountArgs>(
-      args?: Subset<T, OrganizationTeamCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], OrganizationTeamCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a OrganizationTeam.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends OrganizationTeamAggregateArgs>(args: Subset<T, OrganizationTeamAggregateArgs>): Prisma.PrismaPromise<GetOrganizationTeamAggregateType<T>>
-
-    /**
-     * Group by OrganizationTeam.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationTeamGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends OrganizationTeamGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrganizationTeamGroupByArgs['orderBy'] }
-        : { orderBy?: OrganizationTeamGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, OrganizationTeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the OrganizationTeam model
-   */
-  readonly fields: OrganizationTeamFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for OrganizationTeam.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__OrganizationTeamClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    members<T extends OrganizationTeam$membersArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationTeam$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfileProPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the OrganizationTeam model
-   */
-  interface OrganizationTeamFieldRefs {
-    readonly id: FieldRef<"OrganizationTeam", 'String'>
-    readonly name: FieldRef<"OrganizationTeam", 'String'>
-    readonly description: FieldRef<"OrganizationTeam", 'String'>
-    readonly order: FieldRef<"OrganizationTeam", 'Int'>
-    readonly createdAt: FieldRef<"OrganizationTeam", 'DateTime'>
-    readonly updatedAt: FieldRef<"OrganizationTeam", 'DateTime'>
-    readonly organizationId: FieldRef<"OrganizationTeam", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * OrganizationTeam findUnique
-   */
-  export type OrganizationTeamFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter, which OrganizationTeam to fetch.
-     */
-    where: OrganizationTeamWhereUniqueInput
-  }
-
-  /**
-   * OrganizationTeam findUniqueOrThrow
-   */
-  export type OrganizationTeamFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter, which OrganizationTeam to fetch.
-     */
-    where: OrganizationTeamWhereUniqueInput
-  }
-
-  /**
-   * OrganizationTeam findFirst
-   */
-  export type OrganizationTeamFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter, which OrganizationTeam to fetch.
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrganizationTeams to fetch.
-     */
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for OrganizationTeams.
-     */
-    cursor?: OrganizationTeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrganizationTeams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrganizationTeams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of OrganizationTeams.
-     */
-    distinct?: OrganizationTeamScalarFieldEnum | OrganizationTeamScalarFieldEnum[]
-  }
-
-  /**
-   * OrganizationTeam findFirstOrThrow
-   */
-  export type OrganizationTeamFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter, which OrganizationTeam to fetch.
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrganizationTeams to fetch.
-     */
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for OrganizationTeams.
-     */
-    cursor?: OrganizationTeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrganizationTeams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrganizationTeams.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of OrganizationTeams.
-     */
-    distinct?: OrganizationTeamScalarFieldEnum | OrganizationTeamScalarFieldEnum[]
-  }
-
-  /**
-   * OrganizationTeam findMany
-   */
-  export type OrganizationTeamFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter, which OrganizationTeams to fetch.
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of OrganizationTeams to fetch.
-     */
-    orderBy?: OrganizationTeamOrderByWithRelationInput | OrganizationTeamOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing OrganizationTeams.
-     */
-    cursor?: OrganizationTeamWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` OrganizationTeams from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` OrganizationTeams.
-     */
-    skip?: number
-    distinct?: OrganizationTeamScalarFieldEnum | OrganizationTeamScalarFieldEnum[]
-  }
-
-  /**
-   * OrganizationTeam create
-   */
-  export type OrganizationTeamCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * The data needed to create a OrganizationTeam.
-     */
-    data: XOR<OrganizationTeamCreateInput, OrganizationTeamUncheckedCreateInput>
-  }
-
-  /**
-   * OrganizationTeam createMany
-   */
-  export type OrganizationTeamCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many OrganizationTeams.
-     */
-    data: OrganizationTeamCreateManyInput | OrganizationTeamCreateManyInput[]
-  }
-
-  /**
-   * OrganizationTeam createManyAndReturn
-   */
-  export type OrganizationTeamCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * The data used to create many OrganizationTeams.
-     */
-    data: OrganizationTeamCreateManyInput | OrganizationTeamCreateManyInput[]
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * OrganizationTeam update
-   */
-  export type OrganizationTeamUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * The data needed to update a OrganizationTeam.
-     */
-    data: XOR<OrganizationTeamUpdateInput, OrganizationTeamUncheckedUpdateInput>
-    /**
-     * Choose, which OrganizationTeam to update.
-     */
-    where: OrganizationTeamWhereUniqueInput
-  }
-
-  /**
-   * OrganizationTeam updateMany
-   */
-  export type OrganizationTeamUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update OrganizationTeams.
-     */
-    data: XOR<OrganizationTeamUpdateManyMutationInput, OrganizationTeamUncheckedUpdateManyInput>
-    /**
-     * Filter which OrganizationTeams to update
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * Limit how many OrganizationTeams to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * OrganizationTeam updateManyAndReturn
-   */
-  export type OrganizationTeamUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * The data used to update OrganizationTeams.
-     */
-    data: XOR<OrganizationTeamUpdateManyMutationInput, OrganizationTeamUncheckedUpdateManyInput>
-    /**
-     * Filter which OrganizationTeams to update
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * Limit how many OrganizationTeams to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * OrganizationTeam upsert
-   */
-  export type OrganizationTeamUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * The filter to search for the OrganizationTeam to update in case it exists.
-     */
-    where: OrganizationTeamWhereUniqueInput
-    /**
-     * In case the OrganizationTeam found by the `where` argument doesn't exist, create a new OrganizationTeam with this data.
-     */
-    create: XOR<OrganizationTeamCreateInput, OrganizationTeamUncheckedCreateInput>
-    /**
-     * In case the OrganizationTeam was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<OrganizationTeamUpdateInput, OrganizationTeamUncheckedUpdateInput>
-  }
-
-  /**
-   * OrganizationTeam delete
-   */
-  export type OrganizationTeamDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
-    /**
-     * Filter which OrganizationTeam to delete.
-     */
-    where: OrganizationTeamWhereUniqueInput
-  }
-
-  /**
-   * OrganizationTeam deleteMany
-   */
-  export type OrganizationTeamDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which OrganizationTeams to delete
-     */
-    where?: OrganizationTeamWhereInput
-    /**
-     * Limit how many OrganizationTeams to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * OrganizationTeam.members
-   */
-  export type OrganizationTeam$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ProfilePro
-     */
-    select?: ProfileProSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ProfilePro
-     */
-    omit?: ProfileProOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileProInclude<ExtArgs> | null
-    where?: ProfileProWhereInput
-    orderBy?: ProfileProOrderByWithRelationInput | ProfileProOrderByWithRelationInput[]
-    cursor?: ProfileProWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfileProScalarFieldEnum | ProfileProScalarFieldEnum[]
-  }
-
-  /**
-   * OrganizationTeam without action
-   */
-  export type OrganizationTeamDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationTeam
-     */
-    select?: OrganizationTeamSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the OrganizationTeam
-     */
-    omit?: OrganizationTeamOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationTeamInclude<ExtArgs> | null
   }
 
 
@@ -12128,7 +10870,6 @@ export namespace Prisma {
   export const ProfileProScalarFieldEnum: {
     id: 'id',
     profileId: 'profileId',
-    organizationId: 'organizationId',
     updatedAt: 'updatedAt'
   };
 
@@ -12139,24 +10880,12 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
+    ownerId: 'ownerId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
-  export const OrganizationTeamScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    description: 'description',
-    order: 'order',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    organizationId: 'organizationId'
-  };
-
-  export type OrganizationTeamScalarFieldEnum = (typeof OrganizationTeamScalarFieldEnum)[keyof typeof OrganizationTeamScalarFieldEnum]
 
 
   export const ProjectScalarFieldEnum: {
@@ -12227,13 +10956,6 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
   /**
    * Deep Input Types
@@ -12572,7 +11294,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
     userId?: StringFilter<"Profile"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    ProfilePro?: ProfileProListRelationFilter
+    profilePros?: ProfileProListRelationFilter
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -12585,7 +11307,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
-    ProfilePro?: ProfileProOrderByRelationAggregateInput
+    profilePros?: ProfileProOrderByRelationAggregateInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -12601,7 +11323,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    ProfilePro?: ProfileProListRelationFilter
+    profilePros?: ProfileProListRelationFilter
   }, "id" | "userId">
 
   export type ProfileOrderByWithAggregationInput = {
@@ -12638,44 +11360,39 @@ export namespace Prisma {
     NOT?: ProfileProWhereInput | ProfileProWhereInput[]
     id?: StringFilter<"ProfilePro"> | string
     profileId?: StringFilter<"ProfilePro"> | string
-    organizationId?: StringFilter<"ProfilePro"> | string
     updatedAt?: DateTimeFilter<"ProfilePro"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    teams?: OrganizationTeamListRelationFilter
+    organizations?: OrganizationListRelationFilter
+    organizationsOwned?: OrganizationListRelationFilter
     projects?: ProjectListRelationFilter
   }
 
   export type ProfileProOrderByWithRelationInput = {
     id?: SortOrder
     profileId?: SortOrder
-    organizationId?: SortOrder
     updatedAt?: SortOrder
     profile?: ProfileOrderByWithRelationInput
-    organization?: OrganizationOrderByWithRelationInput
-    teams?: OrganizationTeamOrderByRelationAggregateInput
+    organizations?: OrganizationOrderByRelationAggregateInput
+    organizationsOwned?: OrganizationOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
   }
 
   export type ProfileProWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    profileId?: string
-    profileId_organizationId?: ProfileProProfileIdOrganizationIdCompoundUniqueInput
     AND?: ProfileProWhereInput | ProfileProWhereInput[]
     OR?: ProfileProWhereInput[]
     NOT?: ProfileProWhereInput | ProfileProWhereInput[]
-    organizationId?: StringFilter<"ProfilePro"> | string
+    profileId?: StringFilter<"ProfilePro"> | string
     updatedAt?: DateTimeFilter<"ProfilePro"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    teams?: OrganizationTeamListRelationFilter
+    organizations?: OrganizationListRelationFilter
+    organizationsOwned?: OrganizationListRelationFilter
     projects?: ProjectListRelationFilter
-  }, "id" | "profileId" | "profileId_organizationId">
+  }, "id">
 
   export type ProfileProOrderByWithAggregationInput = {
     id?: SortOrder
     profileId?: SortOrder
-    organizationId?: SortOrder
     updatedAt?: SortOrder
     _count?: ProfileProCountOrderByAggregateInput
     _max?: ProfileProMaxOrderByAggregateInput
@@ -12688,7 +11405,6 @@ export namespace Prisma {
     NOT?: ProfileProScalarWhereWithAggregatesInput | ProfileProScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ProfilePro"> | string
     profileId?: StringWithAggregatesFilter<"ProfilePro"> | string
-    organizationId?: StringWithAggregatesFilter<"ProfilePro"> | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProfilePro"> | Date | string
   }
 
@@ -12699,10 +11415,11 @@ export namespace Prisma {
     id?: StringFilter<"Organization"> | string
     name?: StringFilter<"Organization"> | string
     slug?: StringFilter<"Organization"> | string
+    ownerId?: StringFilter<"Organization"> | string
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
-    members?: ProfileProListRelationFilter
-    teams?: OrganizationTeamListRelationFilter
+    profilePros?: ProfileProListRelationFilter
+    owner?: XOR<ProfileProScalarRelationFilter, ProfileProWhereInput>
     projects?: ProjectListRelationFilter
   }
 
@@ -12710,10 +11427,11 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    members?: ProfileProOrderByRelationAggregateInput
-    teams?: OrganizationTeamOrderByRelationAggregateInput
+    profilePros?: ProfileProOrderByRelationAggregateInput
+    owner?: ProfileProOrderByWithRelationInput
     projects?: ProjectOrderByRelationAggregateInput
   }
 
@@ -12724,10 +11442,11 @@ export namespace Prisma {
     OR?: OrganizationWhereInput[]
     NOT?: OrganizationWhereInput | OrganizationWhereInput[]
     name?: StringFilter<"Organization"> | string
+    ownerId?: StringFilter<"Organization"> | string
     createdAt?: DateTimeFilter<"Organization"> | Date | string
     updatedAt?: DateTimeFilter<"Organization"> | Date | string
-    members?: ProfileProListRelationFilter
-    teams?: OrganizationTeamListRelationFilter
+    profilePros?: ProfileProListRelationFilter
+    owner?: XOR<ProfileProScalarRelationFilter, ProfileProWhereInput>
     projects?: ProjectListRelationFilter
   }, "id" | "slug">
 
@@ -12735,6 +11454,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: OrganizationCountOrderByAggregateInput
@@ -12749,78 +11469,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Organization"> | string
     name?: StringWithAggregatesFilter<"Organization"> | string
     slug?: StringWithAggregatesFilter<"Organization"> | string
+    ownerId?: StringWithAggregatesFilter<"Organization"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
-  }
-
-  export type OrganizationTeamWhereInput = {
-    AND?: OrganizationTeamWhereInput | OrganizationTeamWhereInput[]
-    OR?: OrganizationTeamWhereInput[]
-    NOT?: OrganizationTeamWhereInput | OrganizationTeamWhereInput[]
-    id?: StringFilter<"OrganizationTeam"> | string
-    name?: StringFilter<"OrganizationTeam"> | string
-    description?: StringNullableFilter<"OrganizationTeam"> | string | null
-    order?: IntFilter<"OrganizationTeam"> | number
-    createdAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    organizationId?: StringFilter<"OrganizationTeam"> | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    members?: ProfileProListRelationFilter
-  }
-
-  export type OrganizationTeamOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    order?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organizationId?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
-    members?: ProfileProOrderByRelationAggregateInput
-  }
-
-  export type OrganizationTeamWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: OrganizationTeamWhereInput | OrganizationTeamWhereInput[]
-    OR?: OrganizationTeamWhereInput[]
-    NOT?: OrganizationTeamWhereInput | OrganizationTeamWhereInput[]
-    name?: StringFilter<"OrganizationTeam"> | string
-    description?: StringNullableFilter<"OrganizationTeam"> | string | null
-    order?: IntFilter<"OrganizationTeam"> | number
-    createdAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    organizationId?: StringFilter<"OrganizationTeam"> | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    members?: ProfileProListRelationFilter
-  }, "id">
-
-  export type OrganizationTeamOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    order?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organizationId?: SortOrder
-    _count?: OrganizationTeamCountOrderByAggregateInput
-    _avg?: OrganizationTeamAvgOrderByAggregateInput
-    _max?: OrganizationTeamMaxOrderByAggregateInput
-    _min?: OrganizationTeamMinOrderByAggregateInput
-    _sum?: OrganizationTeamSumOrderByAggregateInput
-  }
-
-  export type OrganizationTeamScalarWhereWithAggregatesInput = {
-    AND?: OrganizationTeamScalarWhereWithAggregatesInput | OrganizationTeamScalarWhereWithAggregatesInput[]
-    OR?: OrganizationTeamScalarWhereWithAggregatesInput[]
-    NOT?: OrganizationTeamScalarWhereWithAggregatesInput | OrganizationTeamScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"OrganizationTeam"> | string
-    name?: StringWithAggregatesFilter<"OrganizationTeam"> | string
-    description?: StringNullableWithAggregatesFilter<"OrganizationTeam"> | string | null
-    order?: IntWithAggregatesFilter<"OrganizationTeam"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"OrganizationTeam"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"OrganizationTeam"> | Date | string
-    organizationId?: StringWithAggregatesFilter<"OrganizationTeam"> | string
   }
 
   export type ProjectWhereInput = {
@@ -13273,7 +11924,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutProfileInput
-    ProfilePro?: ProfileProCreateNestedManyWithoutProfileInput
+    profilePros?: ProfileProCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -13285,7 +11936,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    ProfilePro?: ProfileProUncheckedCreateNestedManyWithoutProfileInput
+    profilePros?: ProfileProUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUpdateInput = {
@@ -13297,7 +11948,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutProfileNestedInput
-    ProfilePro?: ProfileProUpdateManyWithoutProfileNestedInput
+    profilePros?: ProfileProUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -13309,7 +11960,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    ProfilePro?: ProfileProUncheckedUpdateManyWithoutProfileNestedInput
+    profilePros?: ProfileProUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -13347,43 +11998,42 @@ export namespace Prisma {
   export type ProfileProCreateInput = {
     id?: string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutProfileProInput
-    organization: OrganizationCreateNestedOneWithoutMembersInput
-    teams?: OrganizationTeamCreateNestedManyWithoutMembersInput
+    profile: ProfileCreateNestedOneWithoutProfileProsInput
+    organizations?: OrganizationCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationCreateNestedManyWithoutOwnerInput
     projects?: ProjectCreateNestedManyWithoutMembersInput
   }
 
   export type ProfileProUncheckedCreateInput = {
     id?: string
     profileId: string
-    organizationId: string
     updatedAt?: Date | string
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutMembersInput
+    organizations?: OrganizationUncheckedCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationUncheckedCreateNestedManyWithoutOwnerInput
     projects?: ProjectUncheckedCreateNestedManyWithoutMembersInput
   }
 
   export type ProfileProUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutProfileProNestedInput
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutMembersNestedInput
+    profile?: ProfileUpdateOneRequiredWithoutProfileProsNestedInput
+    organizations?: OrganizationUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUpdateManyWithoutMembersNestedInput
   }
 
   export type ProfileProUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutMembersNestedInput
+    organizations?: OrganizationUncheckedUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutMembersNestedInput
   }
 
   export type ProfileProCreateManyInput = {
     id?: string
     profileId: string
-    organizationId: string
     updatedAt?: Date | string
   }
 
@@ -13395,7 +12045,6 @@ export namespace Prisma {
   export type ProfileProUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13405,8 +12054,8 @@ export namespace Prisma {
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: ProfileProCreateNestedManyWithoutOrganizationInput
-    teams?: OrganizationTeamCreateNestedManyWithoutOrganizationInput
+    profilePros?: ProfileProCreateNestedManyWithoutOrganizationsInput
+    owner: ProfileProCreateNestedOneWithoutOrganizationsOwnedInput
     projects?: ProjectCreateNestedManyWithoutOrganizationInput
   }
 
@@ -13414,10 +12063,10 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: ProfileProUncheckedCreateNestedManyWithoutOrganizationInput
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutOrganizationInput
+    profilePros?: ProfileProUncheckedCreateNestedManyWithoutOrganizationsInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
@@ -13427,8 +12076,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUpdateManyWithoutOrganizationNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutOrganizationNestedInput
+    profilePros?: ProfileProUpdateManyWithoutOrganizationsNestedInput
+    owner?: ProfileProUpdateOneRequiredWithoutOrganizationsOwnedNestedInput
     projects?: ProjectUpdateManyWithoutOrganizationNestedInput
   }
 
@@ -13436,10 +12085,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUncheckedUpdateManyWithoutOrganizationNestedInput
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutOrganizationNestedInput
+    profilePros?: ProfileProUncheckedUpdateManyWithoutOrganizationsNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
@@ -13447,6 +12096,7 @@ export namespace Prisma {
     id?: string
     name: string
     slug: string
+    ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13463,81 +12113,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrganizationTeamCreateInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTeamsInput
-    members?: ProfileProCreateNestedManyWithoutTeamsInput
-  }
-
-  export type OrganizationTeamUncheckedCreateInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organizationId: string
-    members?: ProfileProUncheckedCreateNestedManyWithoutTeamsInput
-  }
-
-  export type OrganizationTeamUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTeamsNestedInput
-    members?: ProfileProUpdateManyWithoutTeamsNestedInput
-  }
-
-  export type OrganizationTeamUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    members?: ProfileProUncheckedUpdateManyWithoutTeamsNestedInput
-  }
-
-  export type OrganizationTeamCreateManyInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organizationId: string
-  }
-
-  export type OrganizationTeamUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrganizationTeamUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ProjectCreateInput = {
@@ -14012,15 +12590,10 @@ export namespace Prisma {
     isNot?: ProfileWhereInput
   }
 
-  export type OrganizationScalarRelationFilter = {
-    is?: OrganizationWhereInput
-    isNot?: OrganizationWhereInput
-  }
-
-  export type OrganizationTeamListRelationFilter = {
-    every?: OrganizationTeamWhereInput
-    some?: OrganizationTeamWhereInput
-    none?: OrganizationTeamWhereInput
+  export type OrganizationListRelationFilter = {
+    every?: OrganizationWhereInput
+    some?: OrganizationWhereInput
+    none?: OrganizationWhereInput
   }
 
   export type ProjectListRelationFilter = {
@@ -14029,7 +12602,7 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
-  export type OrganizationTeamOrderByRelationAggregateInput = {
+  export type OrganizationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14037,36 +12610,34 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ProfileProProfileIdOrganizationIdCompoundUniqueInput = {
-    profileId: string
-    organizationId: string
-  }
-
   export type ProfileProCountOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
-    organizationId?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ProfileProMaxOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
-    organizationId?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ProfileProMinOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
-    organizationId?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProfileProScalarRelationFilter = {
+    is?: ProfileProWhereInput
+    isNot?: ProfileProWhereInput
   }
 
   export type OrganizationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14075,6 +12646,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14083,73 +12655,14 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type OrganizationTeamCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    order?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organizationId?: SortOrder
-  }
-
-  export type OrganizationTeamAvgOrderByAggregateInput = {
-    order?: SortOrder
-  }
-
-  export type OrganizationTeamMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    order?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organizationId?: SortOrder
-  }
-
-  export type OrganizationTeamMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    order?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organizationId?: SortOrder
-  }
-
-  export type OrganizationTeamSumOrderByAggregateInput = {
-    order?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+  export type OrganizationScalarRelationFilter = {
+    is?: OrganizationWhereInput
+    isNot?: OrganizationWhereInput
   }
 
   export type ProjectCountOrderByAggregateInput = {
@@ -14468,22 +12981,23 @@ export namespace Prisma {
     deleteMany?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
   }
 
-  export type ProfileCreateNestedOneWithoutProfileProInput = {
-    create?: XOR<ProfileCreateWithoutProfileProInput, ProfileUncheckedCreateWithoutProfileProInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutProfileProInput
+  export type ProfileCreateNestedOneWithoutProfileProsInput = {
+    create?: XOR<ProfileCreateWithoutProfileProsInput, ProfileUncheckedCreateWithoutProfileProsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutProfileProsInput
     connect?: ProfileWhereUniqueInput
   }
 
-  export type OrganizationCreateNestedOneWithoutMembersInput = {
-    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
-    connect?: OrganizationWhereUniqueInput
+  export type OrganizationCreateNestedManyWithoutProfileProsInput = {
+    create?: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput> | OrganizationCreateWithoutProfileProsInput[] | OrganizationUncheckedCreateWithoutProfileProsInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutProfileProsInput | OrganizationCreateOrConnectWithoutProfileProsInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
   }
 
-  export type OrganizationTeamCreateNestedManyWithoutMembersInput = {
-    create?: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput> | OrganizationTeamCreateWithoutMembersInput[] | OrganizationTeamUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutMembersInput | OrganizationTeamCreateOrConnectWithoutMembersInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
+  export type OrganizationCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput> | OrganizationCreateWithoutOwnerInput[] | OrganizationUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput | OrganizationCreateOrConnectWithoutOwnerInput[]
+    createMany?: OrganizationCreateManyOwnerInputEnvelope
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
   }
 
   export type ProjectCreateNestedManyWithoutMembersInput = {
@@ -14492,10 +13006,17 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
-  export type OrganizationTeamUncheckedCreateNestedManyWithoutMembersInput = {
-    create?: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput> | OrganizationTeamCreateWithoutMembersInput[] | OrganizationTeamUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutMembersInput | OrganizationTeamCreateOrConnectWithoutMembersInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
+  export type OrganizationUncheckedCreateNestedManyWithoutProfileProsInput = {
+    create?: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput> | OrganizationCreateWithoutProfileProsInput[] | OrganizationUncheckedCreateWithoutProfileProsInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutProfileProsInput | OrganizationCreateOrConnectWithoutProfileProsInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+  }
+
+  export type OrganizationUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput> | OrganizationCreateWithoutOwnerInput[] | OrganizationUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput | OrganizationCreateOrConnectWithoutOwnerInput[]
+    createMany?: OrganizationCreateManyOwnerInputEnvelope
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
   }
 
   export type ProjectUncheckedCreateNestedManyWithoutMembersInput = {
@@ -14504,33 +13025,39 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
-  export type ProfileUpdateOneRequiredWithoutProfileProNestedInput = {
-    create?: XOR<ProfileCreateWithoutProfileProInput, ProfileUncheckedCreateWithoutProfileProInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutProfileProInput
-    upsert?: ProfileUpsertWithoutProfileProInput
+  export type ProfileUpdateOneRequiredWithoutProfileProsNestedInput = {
+    create?: XOR<ProfileCreateWithoutProfileProsInput, ProfileUncheckedCreateWithoutProfileProsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutProfileProsInput
+    upsert?: ProfileUpsertWithoutProfileProsInput
     connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutProfileProInput, ProfileUpdateWithoutProfileProInput>, ProfileUncheckedUpdateWithoutProfileProInput>
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutProfileProsInput, ProfileUpdateWithoutProfileProsInput>, ProfileUncheckedUpdateWithoutProfileProsInput>
   }
 
-  export type OrganizationUpdateOneRequiredWithoutMembersNestedInput = {
-    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
-    upsert?: OrganizationUpsertWithoutMembersInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembersInput, OrganizationUpdateWithoutMembersInput>, OrganizationUncheckedUpdateWithoutMembersInput>
+  export type OrganizationUpdateManyWithoutProfileProsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput> | OrganizationCreateWithoutProfileProsInput[] | OrganizationUncheckedCreateWithoutProfileProsInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutProfileProsInput | OrganizationCreateOrConnectWithoutProfileProsInput[]
+    upsert?: OrganizationUpsertWithWhereUniqueWithoutProfileProsInput | OrganizationUpsertWithWhereUniqueWithoutProfileProsInput[]
+    set?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    disconnect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    delete?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    update?: OrganizationUpdateWithWhereUniqueWithoutProfileProsInput | OrganizationUpdateWithWhereUniqueWithoutProfileProsInput[]
+    updateMany?: OrganizationUpdateManyWithWhereWithoutProfileProsInput | OrganizationUpdateManyWithWhereWithoutProfileProsInput[]
+    deleteMany?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
   }
 
-  export type OrganizationTeamUpdateManyWithoutMembersNestedInput = {
-    create?: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput> | OrganizationTeamCreateWithoutMembersInput[] | OrganizationTeamUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutMembersInput | OrganizationTeamCreateOrConnectWithoutMembersInput[]
-    upsert?: OrganizationTeamUpsertWithWhereUniqueWithoutMembersInput | OrganizationTeamUpsertWithWhereUniqueWithoutMembersInput[]
-    set?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    disconnect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    delete?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    update?: OrganizationTeamUpdateWithWhereUniqueWithoutMembersInput | OrganizationTeamUpdateWithWhereUniqueWithoutMembersInput[]
-    updateMany?: OrganizationTeamUpdateManyWithWhereWithoutMembersInput | OrganizationTeamUpdateManyWithWhereWithoutMembersInput[]
-    deleteMany?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
+  export type OrganizationUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput> | OrganizationCreateWithoutOwnerInput[] | OrganizationUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput | OrganizationCreateOrConnectWithoutOwnerInput[]
+    upsert?: OrganizationUpsertWithWhereUniqueWithoutOwnerInput | OrganizationUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: OrganizationCreateManyOwnerInputEnvelope
+    set?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    disconnect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    delete?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    update?: OrganizationUpdateWithWhereUniqueWithoutOwnerInput | OrganizationUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: OrganizationUpdateManyWithWhereWithoutOwnerInput | OrganizationUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
   }
 
   export type ProjectUpdateManyWithoutMembersNestedInput = {
@@ -14546,17 +13073,31 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
-  export type OrganizationTeamUncheckedUpdateManyWithoutMembersNestedInput = {
-    create?: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput> | OrganizationTeamCreateWithoutMembersInput[] | OrganizationTeamUncheckedCreateWithoutMembersInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutMembersInput | OrganizationTeamCreateOrConnectWithoutMembersInput[]
-    upsert?: OrganizationTeamUpsertWithWhereUniqueWithoutMembersInput | OrganizationTeamUpsertWithWhereUniqueWithoutMembersInput[]
-    set?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    disconnect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    delete?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    update?: OrganizationTeamUpdateWithWhereUniqueWithoutMembersInput | OrganizationTeamUpdateWithWhereUniqueWithoutMembersInput[]
-    updateMany?: OrganizationTeamUpdateManyWithWhereWithoutMembersInput | OrganizationTeamUpdateManyWithWhereWithoutMembersInput[]
-    deleteMany?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
+  export type OrganizationUncheckedUpdateManyWithoutProfileProsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput> | OrganizationCreateWithoutProfileProsInput[] | OrganizationUncheckedCreateWithoutProfileProsInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutProfileProsInput | OrganizationCreateOrConnectWithoutProfileProsInput[]
+    upsert?: OrganizationUpsertWithWhereUniqueWithoutProfileProsInput | OrganizationUpsertWithWhereUniqueWithoutProfileProsInput[]
+    set?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    disconnect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    delete?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    update?: OrganizationUpdateWithWhereUniqueWithoutProfileProsInput | OrganizationUpdateWithWhereUniqueWithoutProfileProsInput[]
+    updateMany?: OrganizationUpdateManyWithWhereWithoutProfileProsInput | OrganizationUpdateManyWithWhereWithoutProfileProsInput[]
+    deleteMany?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
+  }
+
+  export type OrganizationUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput> | OrganizationCreateWithoutOwnerInput[] | OrganizationUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput | OrganizationCreateOrConnectWithoutOwnerInput[]
+    upsert?: OrganizationUpsertWithWhereUniqueWithoutOwnerInput | OrganizationUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: OrganizationCreateManyOwnerInputEnvelope
+    set?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    disconnect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    delete?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    connect?: OrganizationWhereUniqueInput | OrganizationWhereUniqueInput[]
+    update?: OrganizationUpdateWithWhereUniqueWithoutOwnerInput | OrganizationUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: OrganizationUpdateManyWithWhereWithoutOwnerInput | OrganizationUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
   }
 
   export type ProjectUncheckedUpdateManyWithoutMembersNestedInput = {
@@ -14572,18 +13113,16 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
-  export type ProfileProCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput> | ProfileProCreateWithoutOrganizationInput[] | ProfileProUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationInput | ProfileProCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ProfileProCreateManyOrganizationInputEnvelope
+  export type ProfileProCreateNestedManyWithoutOrganizationsInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput> | ProfileProCreateWithoutOrganizationsInput[] | ProfileProUncheckedCreateWithoutOrganizationsInput[]
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsInput | ProfileProCreateOrConnectWithoutOrganizationsInput[]
     connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
   }
 
-  export type OrganizationTeamCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput> | OrganizationTeamCreateWithoutOrganizationInput[] | OrganizationTeamUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutOrganizationInput | OrganizationTeamCreateOrConnectWithoutOrganizationInput[]
-    createMany?: OrganizationTeamCreateManyOrganizationInputEnvelope
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
+  export type ProfileProCreateNestedOneWithoutOrganizationsOwnedInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsOwnedInput, ProfileProUncheckedCreateWithoutOrganizationsOwnedInput>
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsOwnedInput
+    connect?: ProfileProWhereUniqueInput
   }
 
   export type ProjectCreateNestedManyWithoutOrganizationInput = {
@@ -14593,18 +13132,10 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
-  export type ProfileProUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput> | ProfileProCreateWithoutOrganizationInput[] | ProfileProUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationInput | ProfileProCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ProfileProCreateManyOrganizationInputEnvelope
+  export type ProfileProUncheckedCreateNestedManyWithoutOrganizationsInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput> | ProfileProCreateWithoutOrganizationsInput[] | ProfileProUncheckedCreateWithoutOrganizationsInput[]
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsInput | ProfileProCreateOrConnectWithoutOrganizationsInput[]
     connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-  }
-
-  export type OrganizationTeamUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput> | OrganizationTeamCreateWithoutOrganizationInput[] | OrganizationTeamUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutOrganizationInput | OrganizationTeamCreateOrConnectWithoutOrganizationInput[]
-    createMany?: OrganizationTeamCreateManyOrganizationInputEnvelope
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
   }
 
   export type ProjectUncheckedCreateNestedManyWithoutOrganizationInput = {
@@ -14614,32 +13145,25 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
-  export type ProfileProUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput> | ProfileProCreateWithoutOrganizationInput[] | ProfileProUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationInput | ProfileProCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ProfileProUpsertWithWhereUniqueWithoutOrganizationInput | ProfileProUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ProfileProCreateManyOrganizationInputEnvelope
+  export type ProfileProUpdateManyWithoutOrganizationsNestedInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput> | ProfileProCreateWithoutOrganizationsInput[] | ProfileProUncheckedCreateWithoutOrganizationsInput[]
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsInput | ProfileProCreateOrConnectWithoutOrganizationsInput[]
+    upsert?: ProfileProUpsertWithWhereUniqueWithoutOrganizationsInput | ProfileProUpsertWithWhereUniqueWithoutOrganizationsInput[]
     set?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     disconnect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     delete?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    update?: ProfileProUpdateWithWhereUniqueWithoutOrganizationInput | ProfileProUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ProfileProUpdateManyWithWhereWithoutOrganizationInput | ProfileProUpdateManyWithWhereWithoutOrganizationInput[]
+    update?: ProfileProUpdateWithWhereUniqueWithoutOrganizationsInput | ProfileProUpdateWithWhereUniqueWithoutOrganizationsInput[]
+    updateMany?: ProfileProUpdateManyWithWhereWithoutOrganizationsInput | ProfileProUpdateManyWithWhereWithoutOrganizationsInput[]
     deleteMany?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
   }
 
-  export type OrganizationTeamUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput> | OrganizationTeamCreateWithoutOrganizationInput[] | OrganizationTeamUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutOrganizationInput | OrganizationTeamCreateOrConnectWithoutOrganizationInput[]
-    upsert?: OrganizationTeamUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationTeamUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: OrganizationTeamCreateManyOrganizationInputEnvelope
-    set?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    disconnect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    delete?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    update?: OrganizationTeamUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationTeamUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: OrganizationTeamUpdateManyWithWhereWithoutOrganizationInput | OrganizationTeamUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
+  export type ProfileProUpdateOneRequiredWithoutOrganizationsOwnedNestedInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsOwnedInput, ProfileProUncheckedCreateWithoutOrganizationsOwnedInput>
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsOwnedInput
+    upsert?: ProfileProUpsertWithoutOrganizationsOwnedInput
+    connect?: ProfileProWhereUniqueInput
+    update?: XOR<XOR<ProfileProUpdateToOneWithWhereWithoutOrganizationsOwnedInput, ProfileProUpdateWithoutOrganizationsOwnedInput>, ProfileProUncheckedUpdateWithoutOrganizationsOwnedInput>
   }
 
   export type ProjectUpdateManyWithoutOrganizationNestedInput = {
@@ -14656,32 +13180,17 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
-  export type ProfileProUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput> | ProfileProCreateWithoutOrganizationInput[] | ProfileProUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationInput | ProfileProCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ProfileProUpsertWithWhereUniqueWithoutOrganizationInput | ProfileProUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ProfileProCreateManyOrganizationInputEnvelope
+  export type ProfileProUncheckedUpdateManyWithoutOrganizationsNestedInput = {
+    create?: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput> | ProfileProCreateWithoutOrganizationsInput[] | ProfileProUncheckedCreateWithoutOrganizationsInput[]
+    connectOrCreate?: ProfileProCreateOrConnectWithoutOrganizationsInput | ProfileProCreateOrConnectWithoutOrganizationsInput[]
+    upsert?: ProfileProUpsertWithWhereUniqueWithoutOrganizationsInput | ProfileProUpsertWithWhereUniqueWithoutOrganizationsInput[]
     set?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     disconnect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     delete?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
     connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    update?: ProfileProUpdateWithWhereUniqueWithoutOrganizationInput | ProfileProUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ProfileProUpdateManyWithWhereWithoutOrganizationInput | ProfileProUpdateManyWithWhereWithoutOrganizationInput[]
+    update?: ProfileProUpdateWithWhereUniqueWithoutOrganizationsInput | ProfileProUpdateWithWhereUniqueWithoutOrganizationsInput[]
+    updateMany?: ProfileProUpdateManyWithWhereWithoutOrganizationsInput | ProfileProUpdateManyWithWhereWithoutOrganizationsInput[]
     deleteMany?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
-  }
-
-  export type OrganizationTeamUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput> | OrganizationTeamCreateWithoutOrganizationInput[] | OrganizationTeamUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationTeamCreateOrConnectWithoutOrganizationInput | OrganizationTeamCreateOrConnectWithoutOrganizationInput[]
-    upsert?: OrganizationTeamUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationTeamUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: OrganizationTeamCreateManyOrganizationInputEnvelope
-    set?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    disconnect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    delete?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    connect?: OrganizationTeamWhereUniqueInput | OrganizationTeamWhereUniqueInput[]
-    update?: OrganizationTeamUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationTeamUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: OrganizationTeamUpdateManyWithWhereWithoutOrganizationInput | OrganizationTeamUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
   }
 
   export type ProjectUncheckedUpdateManyWithoutOrganizationNestedInput = {
@@ -14696,66 +13205,6 @@ export namespace Prisma {
     update?: ProjectUpdateWithWhereUniqueWithoutOrganizationInput | ProjectUpdateWithWhereUniqueWithoutOrganizationInput[]
     updateMany?: ProjectUpdateManyWithWhereWithoutOrganizationInput | ProjectUpdateManyWithWhereWithoutOrganizationInput[]
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-  }
-
-  export type OrganizationCreateNestedOneWithoutTeamsInput = {
-    create?: XOR<OrganizationCreateWithoutTeamsInput, OrganizationUncheckedCreateWithoutTeamsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTeamsInput
-    connect?: OrganizationWhereUniqueInput
-  }
-
-  export type ProfileProCreateNestedManyWithoutTeamsInput = {
-    create?: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput> | ProfileProCreateWithoutTeamsInput[] | ProfileProUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutTeamsInput | ProfileProCreateOrConnectWithoutTeamsInput[]
-    connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-  }
-
-  export type ProfileProUncheckedCreateNestedManyWithoutTeamsInput = {
-    create?: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput> | ProfileProCreateWithoutTeamsInput[] | ProfileProUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutTeamsInput | ProfileProCreateOrConnectWithoutTeamsInput[]
-    connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type OrganizationUpdateOneRequiredWithoutTeamsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutTeamsInput, OrganizationUncheckedCreateWithoutTeamsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTeamsInput
-    upsert?: OrganizationUpsertWithoutTeamsInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutTeamsInput, OrganizationUpdateWithoutTeamsInput>, OrganizationUncheckedUpdateWithoutTeamsInput>
-  }
-
-  export type ProfileProUpdateManyWithoutTeamsNestedInput = {
-    create?: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput> | ProfileProCreateWithoutTeamsInput[] | ProfileProUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutTeamsInput | ProfileProCreateOrConnectWithoutTeamsInput[]
-    upsert?: ProfileProUpsertWithWhereUniqueWithoutTeamsInput | ProfileProUpsertWithWhereUniqueWithoutTeamsInput[]
-    set?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    disconnect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    delete?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    update?: ProfileProUpdateWithWhereUniqueWithoutTeamsInput | ProfileProUpdateWithWhereUniqueWithoutTeamsInput[]
-    updateMany?: ProfileProUpdateManyWithWhereWithoutTeamsInput | ProfileProUpdateManyWithWhereWithoutTeamsInput[]
-    deleteMany?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
-  }
-
-  export type ProfileProUncheckedUpdateManyWithoutTeamsNestedInput = {
-    create?: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput> | ProfileProCreateWithoutTeamsInput[] | ProfileProUncheckedCreateWithoutTeamsInput[]
-    connectOrCreate?: ProfileProCreateOrConnectWithoutTeamsInput | ProfileProCreateOrConnectWithoutTeamsInput[]
-    upsert?: ProfileProUpsertWithWhereUniqueWithoutTeamsInput | ProfileProUpsertWithWhereUniqueWithoutTeamsInput[]
-    set?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    disconnect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    delete?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    connect?: ProfileProWhereUniqueInput | ProfileProWhereUniqueInput[]
-    update?: ProfileProUpdateWithWhereUniqueWithoutTeamsInput | ProfileProUpdateWithWhereUniqueWithoutTeamsInput[]
-    updateMany?: ProfileProUpdateManyWithWhereWithoutTeamsInput | ProfileProUpdateManyWithWhereWithoutTeamsInput[]
-    deleteMany?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
   }
 
   export type OrganizationCreateNestedOneWithoutProjectsInput = {
@@ -14974,33 +13423,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type SessionCreateWithoutUserInput = {
     id?: string
     token: string
@@ -15104,7 +13526,7 @@ export namespace Prisma {
     languagePreferred?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    ProfilePro?: ProfileProCreateNestedManyWithoutProfileInput
+    profilePros?: ProfileProCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateWithoutUserInput = {
@@ -15115,7 +13537,7 @@ export namespace Prisma {
     languagePreferred?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    ProfilePro?: ProfileProUncheckedCreateNestedManyWithoutProfileInput
+    profilePros?: ProfileProUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileCreateOrConnectWithoutUserInput = {
@@ -15236,7 +13658,7 @@ export namespace Prisma {
     languagePreferred?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ProfilePro?: ProfileProUpdateManyWithoutProfileNestedInput
+    profilePros?: ProfileProUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -15247,7 +13669,7 @@ export namespace Prisma {
     languagePreferred?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ProfilePro?: ProfileProUncheckedUpdateManyWithoutProfileNestedInput
+    profilePros?: ProfileProUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -15530,16 +13952,16 @@ export namespace Prisma {
   export type ProfileProCreateWithoutProfileInput = {
     id?: string
     updatedAt?: Date | string
-    organization: OrganizationCreateNestedOneWithoutMembersInput
-    teams?: OrganizationTeamCreateNestedManyWithoutMembersInput
+    organizations?: OrganizationCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationCreateNestedManyWithoutOwnerInput
     projects?: ProjectCreateNestedManyWithoutMembersInput
   }
 
   export type ProfileProUncheckedCreateWithoutProfileInput = {
     id?: string
-    organizationId: string
     updatedAt?: Date | string
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutMembersInput
+    organizations?: OrganizationUncheckedCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationUncheckedCreateNestedManyWithoutOwnerInput
     projects?: ProjectUncheckedCreateNestedManyWithoutMembersInput
   }
 
@@ -15617,11 +14039,10 @@ export namespace Prisma {
     NOT?: ProfileProScalarWhereInput | ProfileProScalarWhereInput[]
     id?: StringFilter<"ProfilePro"> | string
     profileId?: StringFilter<"ProfilePro"> | string
-    organizationId?: StringFilter<"ProfilePro"> | string
     updatedAt?: DateTimeFilter<"ProfilePro"> | Date | string
   }
 
-  export type ProfileCreateWithoutProfileProInput = {
+  export type ProfileCreateWithoutProfileProsInput = {
     id?: string
     firstName: string
     lastName: string
@@ -15632,7 +14053,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProfileInput
   }
 
-  export type ProfileUncheckedCreateWithoutProfileProInput = {
+  export type ProfileUncheckedCreateWithoutProfileProsInput = {
     id?: string
     firstName: string
     lastName: string
@@ -15643,59 +14064,63 @@ export namespace Prisma {
     userId: string
   }
 
-  export type ProfileCreateOrConnectWithoutProfileProInput = {
+  export type ProfileCreateOrConnectWithoutProfileProsInput = {
     where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutProfileProInput, ProfileUncheckedCreateWithoutProfileProInput>
+    create: XOR<ProfileCreateWithoutProfileProsInput, ProfileUncheckedCreateWithoutProfileProsInput>
   }
 
-  export type OrganizationCreateWithoutMembersInput = {
+  export type OrganizationCreateWithoutProfileProsInput = {
     id?: string
     name: string
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    teams?: OrganizationTeamCreateNestedManyWithoutOrganizationInput
+    owner: ProfileProCreateNestedOneWithoutOrganizationsOwnedInput
     projects?: ProjectCreateNestedManyWithoutOrganizationInput
   }
 
-  export type OrganizationUncheckedCreateWithoutMembersInput = {
+  export type OrganizationUncheckedCreateWithoutProfileProsInput = {
+    id?: string
+    name: string
+    slug: string
+    ownerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    projects?: ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutProfileProsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput>
+  }
+
+  export type OrganizationCreateWithoutOwnerInput = {
     id?: string
     name: string
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutOrganizationInput
+    profilePros?: ProfileProCreateNestedManyWithoutOrganizationsInput
+    projects?: ProjectCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profilePros?: ProfileProUncheckedCreateNestedManyWithoutOrganizationsInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
-  export type OrganizationCreateOrConnectWithoutMembersInput = {
+  export type OrganizationCreateOrConnectWithoutOwnerInput = {
     where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    create: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
   }
 
-  export type OrganizationTeamCreateWithoutMembersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTeamsInput
-  }
-
-  export type OrganizationTeamUncheckedCreateWithoutMembersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organizationId: string
-  }
-
-  export type OrganizationTeamCreateOrConnectWithoutMembersInput = {
-    where: OrganizationTeamWhereUniqueInput
-    create: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput>
+  export type OrganizationCreateManyOwnerInputEnvelope = {
+    data: OrganizationCreateManyOwnerInput | OrganizationCreateManyOwnerInput[]
   }
 
   export type ProjectCreateWithoutMembersInput = {
@@ -15727,18 +14152,18 @@ export namespace Prisma {
     create: XOR<ProjectCreateWithoutMembersInput, ProjectUncheckedCreateWithoutMembersInput>
   }
 
-  export type ProfileUpsertWithoutProfileProInput = {
-    update: XOR<ProfileUpdateWithoutProfileProInput, ProfileUncheckedUpdateWithoutProfileProInput>
-    create: XOR<ProfileCreateWithoutProfileProInput, ProfileUncheckedCreateWithoutProfileProInput>
+  export type ProfileUpsertWithoutProfileProsInput = {
+    update: XOR<ProfileUpdateWithoutProfileProsInput, ProfileUncheckedUpdateWithoutProfileProsInput>
+    create: XOR<ProfileCreateWithoutProfileProsInput, ProfileUncheckedCreateWithoutProfileProsInput>
     where?: ProfileWhereInput
   }
 
-  export type ProfileUpdateToOneWithWhereWithoutProfileProInput = {
+  export type ProfileUpdateToOneWithWhereWithoutProfileProsInput = {
     where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutProfileProInput, ProfileUncheckedUpdateWithoutProfileProInput>
+    data: XOR<ProfileUpdateWithoutProfileProsInput, ProfileUncheckedUpdateWithoutProfileProsInput>
   }
 
-  export type ProfileUpdateWithoutProfileProInput = {
+  export type ProfileUpdateWithoutProfileProsInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
@@ -15749,7 +14174,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProfileNestedInput
   }
 
-  export type ProfileUncheckedUpdateWithoutProfileProInput = {
+  export type ProfileUncheckedUpdateWithoutProfileProsInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
@@ -15760,64 +14185,48 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type OrganizationUpsertWithoutMembersInput = {
-    update: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
-    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    where?: OrganizationWhereInput
+  export type OrganizationUpsertWithWhereUniqueWithoutProfileProsInput = {
+    where: OrganizationWhereUniqueInput
+    update: XOR<OrganizationUpdateWithoutProfileProsInput, OrganizationUncheckedUpdateWithoutProfileProsInput>
+    create: XOR<OrganizationCreateWithoutProfileProsInput, OrganizationUncheckedCreateWithoutProfileProsInput>
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+  export type OrganizationUpdateWithWhereUniqueWithoutProfileProsInput = {
+    where: OrganizationWhereUniqueInput
+    data: XOR<OrganizationUpdateWithoutProfileProsInput, OrganizationUncheckedUpdateWithoutProfileProsInput>
   }
 
-  export type OrganizationUpdateWithoutMembersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUpdateManyWithoutOrganizationNestedInput
-    projects?: ProjectUpdateManyWithoutOrganizationNestedInput
+  export type OrganizationUpdateManyWithWhereWithoutProfileProsInput = {
+    where: OrganizationScalarWhereInput
+    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyWithoutProfileProsInput>
   }
 
-  export type OrganizationUncheckedUpdateWithoutMembersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutOrganizationNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  export type OrganizationScalarWhereInput = {
+    AND?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
+    OR?: OrganizationScalarWhereInput[]
+    NOT?: OrganizationScalarWhereInput | OrganizationScalarWhereInput[]
+    id?: StringFilter<"Organization"> | string
+    name?: StringFilter<"Organization"> | string
+    slug?: StringFilter<"Organization"> | string
+    ownerId?: StringFilter<"Organization"> | string
+    createdAt?: DateTimeFilter<"Organization"> | Date | string
+    updatedAt?: DateTimeFilter<"Organization"> | Date | string
   }
 
-  export type OrganizationTeamUpsertWithWhereUniqueWithoutMembersInput = {
-    where: OrganizationTeamWhereUniqueInput
-    update: XOR<OrganizationTeamUpdateWithoutMembersInput, OrganizationTeamUncheckedUpdateWithoutMembersInput>
-    create: XOR<OrganizationTeamCreateWithoutMembersInput, OrganizationTeamUncheckedCreateWithoutMembersInput>
+  export type OrganizationUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: OrganizationWhereUniqueInput
+    update: XOR<OrganizationUpdateWithoutOwnerInput, OrganizationUncheckedUpdateWithoutOwnerInput>
+    create: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
   }
 
-  export type OrganizationTeamUpdateWithWhereUniqueWithoutMembersInput = {
-    where: OrganizationTeamWhereUniqueInput
-    data: XOR<OrganizationTeamUpdateWithoutMembersInput, OrganizationTeamUncheckedUpdateWithoutMembersInput>
+  export type OrganizationUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: OrganizationWhereUniqueInput
+    data: XOR<OrganizationUpdateWithoutOwnerInput, OrganizationUncheckedUpdateWithoutOwnerInput>
   }
 
-  export type OrganizationTeamUpdateManyWithWhereWithoutMembersInput = {
-    where: OrganizationTeamScalarWhereInput
-    data: XOR<OrganizationTeamUpdateManyMutationInput, OrganizationTeamUncheckedUpdateManyWithoutMembersInput>
-  }
-
-  export type OrganizationTeamScalarWhereInput = {
-    AND?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
-    OR?: OrganizationTeamScalarWhereInput[]
-    NOT?: OrganizationTeamScalarWhereInput | OrganizationTeamScalarWhereInput[]
-    id?: StringFilter<"OrganizationTeam"> | string
-    name?: StringFilter<"OrganizationTeam"> | string
-    description?: StringNullableFilter<"OrganizationTeam"> | string | null
-    order?: IntFilter<"OrganizationTeam"> | number
-    createdAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationTeam"> | Date | string
-    organizationId?: StringFilter<"OrganizationTeam"> | string
+  export type OrganizationUpdateManyWithWhereWithoutOwnerInput = {
+    where: OrganizationScalarWhereInput
+    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyWithoutOwnerInput>
   }
 
   export type ProjectUpsertWithWhereUniqueWithoutMembersInput = {
@@ -15851,58 +14260,46 @@ export namespace Prisma {
     organizationId?: StringFilter<"Project"> | string
   }
 
-  export type ProfileProCreateWithoutOrganizationInput = {
+  export type ProfileProCreateWithoutOrganizationsInput = {
     id?: string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutProfileProInput
-    teams?: OrganizationTeamCreateNestedManyWithoutMembersInput
+    profile: ProfileCreateNestedOneWithoutProfileProsInput
+    organizationsOwned?: OrganizationCreateNestedManyWithoutOwnerInput
     projects?: ProjectCreateNestedManyWithoutMembersInput
   }
 
-  export type ProfileProUncheckedCreateWithoutOrganizationInput = {
+  export type ProfileProUncheckedCreateWithoutOrganizationsInput = {
     id?: string
     profileId: string
     updatedAt?: Date | string
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutMembersInput
+    organizationsOwned?: OrganizationUncheckedCreateNestedManyWithoutOwnerInput
     projects?: ProjectUncheckedCreateNestedManyWithoutMembersInput
   }
 
-  export type ProfileProCreateOrConnectWithoutOrganizationInput = {
+  export type ProfileProCreateOrConnectWithoutOrganizationsInput = {
     where: ProfileProWhereUniqueInput
-    create: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput>
+    create: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput>
   }
 
-  export type ProfileProCreateManyOrganizationInputEnvelope = {
-    data: ProfileProCreateManyOrganizationInput | ProfileProCreateManyOrganizationInput[]
-  }
-
-  export type OrganizationTeamCreateWithoutOrganizationInput = {
+  export type ProfileProCreateWithoutOrganizationsOwnedInput = {
     id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
     updatedAt?: Date | string
-    members?: ProfileProCreateNestedManyWithoutTeamsInput
+    profile: ProfileCreateNestedOneWithoutProfileProsInput
+    organizations?: OrganizationCreateNestedManyWithoutProfileProsInput
+    projects?: ProjectCreateNestedManyWithoutMembersInput
   }
 
-  export type OrganizationTeamUncheckedCreateWithoutOrganizationInput = {
+  export type ProfileProUncheckedCreateWithoutOrganizationsOwnedInput = {
     id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
+    profileId: string
     updatedAt?: Date | string
-    members?: ProfileProUncheckedCreateNestedManyWithoutTeamsInput
+    organizations?: OrganizationUncheckedCreateNestedManyWithoutProfileProsInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutMembersInput
   }
 
-  export type OrganizationTeamCreateOrConnectWithoutOrganizationInput = {
-    where: OrganizationTeamWhereUniqueInput
-    create: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type OrganizationTeamCreateManyOrganizationInputEnvelope = {
-    data: OrganizationTeamCreateManyOrganizationInput | OrganizationTeamCreateManyOrganizationInput[]
+  export type ProfileProCreateOrConnectWithoutOrganizationsOwnedInput = {
+    where: ProfileProWhereUniqueInput
+    create: XOR<ProfileProCreateWithoutOrganizationsOwnedInput, ProfileProUncheckedCreateWithoutOrganizationsOwnedInput>
   }
 
   export type ProjectCreateWithoutOrganizationInput = {
@@ -15938,36 +14335,47 @@ export namespace Prisma {
     data: ProjectCreateManyOrganizationInput | ProjectCreateManyOrganizationInput[]
   }
 
-  export type ProfileProUpsertWithWhereUniqueWithoutOrganizationInput = {
+  export type ProfileProUpsertWithWhereUniqueWithoutOrganizationsInput = {
     where: ProfileProWhereUniqueInput
-    update: XOR<ProfileProUpdateWithoutOrganizationInput, ProfileProUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<ProfileProCreateWithoutOrganizationInput, ProfileProUncheckedCreateWithoutOrganizationInput>
+    update: XOR<ProfileProUpdateWithoutOrganizationsInput, ProfileProUncheckedUpdateWithoutOrganizationsInput>
+    create: XOR<ProfileProCreateWithoutOrganizationsInput, ProfileProUncheckedCreateWithoutOrganizationsInput>
   }
 
-  export type ProfileProUpdateWithWhereUniqueWithoutOrganizationInput = {
+  export type ProfileProUpdateWithWhereUniqueWithoutOrganizationsInput = {
     where: ProfileProWhereUniqueInput
-    data: XOR<ProfileProUpdateWithoutOrganizationInput, ProfileProUncheckedUpdateWithoutOrganizationInput>
+    data: XOR<ProfileProUpdateWithoutOrganizationsInput, ProfileProUncheckedUpdateWithoutOrganizationsInput>
   }
 
-  export type ProfileProUpdateManyWithWhereWithoutOrganizationInput = {
+  export type ProfileProUpdateManyWithWhereWithoutOrganizationsInput = {
     where: ProfileProScalarWhereInput
-    data: XOR<ProfileProUpdateManyMutationInput, ProfileProUncheckedUpdateManyWithoutOrganizationInput>
+    data: XOR<ProfileProUpdateManyMutationInput, ProfileProUncheckedUpdateManyWithoutOrganizationsInput>
   }
 
-  export type OrganizationTeamUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: OrganizationTeamWhereUniqueInput
-    update: XOR<OrganizationTeamUpdateWithoutOrganizationInput, OrganizationTeamUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<OrganizationTeamCreateWithoutOrganizationInput, OrganizationTeamUncheckedCreateWithoutOrganizationInput>
+  export type ProfileProUpsertWithoutOrganizationsOwnedInput = {
+    update: XOR<ProfileProUpdateWithoutOrganizationsOwnedInput, ProfileProUncheckedUpdateWithoutOrganizationsOwnedInput>
+    create: XOR<ProfileProCreateWithoutOrganizationsOwnedInput, ProfileProUncheckedCreateWithoutOrganizationsOwnedInput>
+    where?: ProfileProWhereInput
   }
 
-  export type OrganizationTeamUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: OrganizationTeamWhereUniqueInput
-    data: XOR<OrganizationTeamUpdateWithoutOrganizationInput, OrganizationTeamUncheckedUpdateWithoutOrganizationInput>
+  export type ProfileProUpdateToOneWithWhereWithoutOrganizationsOwnedInput = {
+    where?: ProfileProWhereInput
+    data: XOR<ProfileProUpdateWithoutOrganizationsOwnedInput, ProfileProUncheckedUpdateWithoutOrganizationsOwnedInput>
   }
 
-  export type OrganizationTeamUpdateManyWithWhereWithoutOrganizationInput = {
-    where: OrganizationTeamScalarWhereInput
-    data: XOR<OrganizationTeamUpdateManyMutationInput, OrganizationTeamUncheckedUpdateManyWithoutOrganizationInput>
+  export type ProfileProUpdateWithoutOrganizationsOwnedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProfileUpdateOneRequiredWithoutProfileProsNestedInput
+    organizations?: OrganizationUpdateManyWithoutProfileProsNestedInput
+    projects?: ProjectUpdateManyWithoutMembersNestedInput
+  }
+
+  export type ProfileProUncheckedUpdateWithoutOrganizationsOwnedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizations?: OrganizationUncheckedUpdateManyWithoutProfileProsNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutMembersNestedInput
   }
 
   export type ProjectUpsertWithWhereUniqueWithoutOrganizationInput = {
@@ -15986,117 +14394,24 @@ export namespace Prisma {
     data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutOrganizationInput>
   }
 
-  export type OrganizationCreateWithoutTeamsInput = {
-    id?: string
-    name: string
-    slug: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: ProfileProCreateNestedManyWithoutOrganizationInput
-    projects?: ProjectCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutTeamsInput = {
-    id?: string
-    name: string
-    slug: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: ProfileProUncheckedCreateNestedManyWithoutOrganizationInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutTeamsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutTeamsInput, OrganizationUncheckedCreateWithoutTeamsInput>
-  }
-
-  export type ProfileProCreateWithoutTeamsInput = {
-    id?: string
-    updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutProfileProInput
-    organization: OrganizationCreateNestedOneWithoutMembersInput
-    projects?: ProjectCreateNestedManyWithoutMembersInput
-  }
-
-  export type ProfileProUncheckedCreateWithoutTeamsInput = {
-    id?: string
-    profileId: string
-    organizationId: string
-    updatedAt?: Date | string
-    projects?: ProjectUncheckedCreateNestedManyWithoutMembersInput
-  }
-
-  export type ProfileProCreateOrConnectWithoutTeamsInput = {
-    where: ProfileProWhereUniqueInput
-    create: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput>
-  }
-
-  export type OrganizationUpsertWithoutTeamsInput = {
-    update: XOR<OrganizationUpdateWithoutTeamsInput, OrganizationUncheckedUpdateWithoutTeamsInput>
-    create: XOR<OrganizationCreateWithoutTeamsInput, OrganizationUncheckedCreateWithoutTeamsInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutTeamsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutTeamsInput, OrganizationUncheckedUpdateWithoutTeamsInput>
-  }
-
-  export type OrganizationUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUpdateManyWithoutOrganizationNestedInput
-    projects?: ProjectUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUncheckedUpdateManyWithoutOrganizationNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type ProfileProUpsertWithWhereUniqueWithoutTeamsInput = {
-    where: ProfileProWhereUniqueInput
-    update: XOR<ProfileProUpdateWithoutTeamsInput, ProfileProUncheckedUpdateWithoutTeamsInput>
-    create: XOR<ProfileProCreateWithoutTeamsInput, ProfileProUncheckedCreateWithoutTeamsInput>
-  }
-
-  export type ProfileProUpdateWithWhereUniqueWithoutTeamsInput = {
-    where: ProfileProWhereUniqueInput
-    data: XOR<ProfileProUpdateWithoutTeamsInput, ProfileProUncheckedUpdateWithoutTeamsInput>
-  }
-
-  export type ProfileProUpdateManyWithWhereWithoutTeamsInput = {
-    where: ProfileProScalarWhereInput
-    data: XOR<ProfileProUpdateManyMutationInput, ProfileProUncheckedUpdateManyWithoutTeamsInput>
-  }
-
   export type OrganizationCreateWithoutProjectsInput = {
     id?: string
     name: string
     slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: ProfileProCreateNestedManyWithoutOrganizationInput
-    teams?: OrganizationTeamCreateNestedManyWithoutOrganizationInput
+    profilePros?: ProfileProCreateNestedManyWithoutOrganizationsInput
+    owner: ProfileProCreateNestedOneWithoutOrganizationsOwnedInput
   }
 
   export type OrganizationUncheckedCreateWithoutProjectsInput = {
     id?: string
     name: string
     slug: string
+    ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: ProfileProUncheckedCreateNestedManyWithoutOrganizationInput
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutOrganizationInput
+    profilePros?: ProfileProUncheckedCreateNestedManyWithoutOrganizationsInput
   }
 
   export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -16107,17 +14422,17 @@ export namespace Prisma {
   export type ProfileProCreateWithoutProjectsInput = {
     id?: string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutProfileProInput
-    organization: OrganizationCreateNestedOneWithoutMembersInput
-    teams?: OrganizationTeamCreateNestedManyWithoutMembersInput
+    profile: ProfileCreateNestedOneWithoutProfileProsInput
+    organizations?: OrganizationCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationCreateNestedManyWithoutOwnerInput
   }
 
   export type ProfileProUncheckedCreateWithoutProjectsInput = {
     id?: string
     profileId: string
-    organizationId: string
     updatedAt?: Date | string
-    teams?: OrganizationTeamUncheckedCreateNestedManyWithoutMembersInput
+    organizations?: OrganizationUncheckedCreateNestedManyWithoutProfileProsInput
+    organizationsOwned?: OrganizationUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type ProfileProCreateOrConnectWithoutProjectsInput = {
@@ -16142,18 +14457,18 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUpdateManyWithoutOrganizationNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutOrganizationNestedInput
+    profilePros?: ProfileProUpdateManyWithoutOrganizationsNestedInput
+    owner?: ProfileProUpdateOneRequiredWithoutOrganizationsOwnedNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUncheckedUpdateManyWithoutOrganizationNestedInput
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutOrganizationNestedInput
+    profilePros?: ProfileProUncheckedUpdateManyWithoutOrganizationsNestedInput
   }
 
   export type ProfileProUpsertWithWhereUniqueWithoutProjectsInput = {
@@ -16310,60 +14625,93 @@ export namespace Prisma {
 
   export type ProfileProCreateManyProfileInput = {
     id?: string
-    organizationId: string
     updatedAt?: Date | string
   }
 
   export type ProfileProUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutMembersNestedInput
+    organizations?: OrganizationUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUpdateManyWithoutMembersNestedInput
   }
 
   export type ProfileProUncheckedUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutMembersNestedInput
+    organizations?: OrganizationUncheckedUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutMembersNestedInput
   }
 
   export type ProfileProUncheckedUpdateManyWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrganizationTeamUpdateWithoutMembersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTeamsNestedInput
+  export type OrganizationCreateManyOwnerInput = {
+    id?: string
+    name: string
+    slug: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type OrganizationTeamUncheckedUpdateWithoutMembersInput = {
+  export type OrganizationUpdateWithoutProfileProsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
+    owner?: ProfileProUpdateOneRequiredWithoutOrganizationsOwnedNestedInput
+    projects?: ProjectUpdateManyWithoutOrganizationNestedInput
   }
 
-  export type OrganizationTeamUncheckedUpdateManyWithoutMembersInput = {
+  export type OrganizationUncheckedUpdateWithoutProfileProsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
+    slug?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
+    projects?: ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateManyWithoutProfileProsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profilePros?: ProfileProUpdateManyWithoutOrganizationsNestedInput
+    projects?: ProjectUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profilePros?: ProfileProUncheckedUpdateManyWithoutOrganizationsNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProjectUpdateWithoutMembersInput = {
@@ -16402,21 +14750,6 @@ export namespace Prisma {
     organizationId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ProfileProCreateManyOrganizationInput = {
-    id?: string
-    profileId: string
-    updatedAt?: Date | string
-  }
-
-  export type OrganizationTeamCreateManyOrganizationInput = {
-    id?: string
-    name: string
-    description?: string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type ProjectCreateManyOrganizationInput = {
     id?: string
     name: string
@@ -16428,54 +14761,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ProfileProUpdateWithoutOrganizationInput = {
+  export type ProfileProUpdateWithoutOrganizationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutProfileProNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutMembersNestedInput
+    profile?: ProfileUpdateOneRequiredWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUpdateManyWithoutMembersNestedInput
   }
 
-  export type ProfileProUncheckedUpdateWithoutOrganizationInput = {
+  export type ProfileProUncheckedUpdateWithoutOrganizationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutMembersNestedInput
+    organizationsOwned?: OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutMembersNestedInput
   }
 
-  export type ProfileProUncheckedUpdateManyWithoutOrganizationInput = {
+  export type ProfileProUncheckedUpdateManyWithoutOrganizationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrganizationTeamUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUpdateManyWithoutTeamsNestedInput
-  }
-
-  export type OrganizationTeamUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: ProfileProUncheckedUpdateManyWithoutTeamsNestedInput
-  }
-
-  export type OrganizationTeamUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16514,49 +14818,25 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProfileProUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutProfileProNestedInput
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
-    projects?: ProjectUpdateManyWithoutMembersNestedInput
-  }
-
-  export type ProfileProUncheckedUpdateWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projects?: ProjectUncheckedUpdateManyWithoutMembersNestedInput
-  }
-
-  export type ProfileProUncheckedUpdateManyWithoutTeamsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ProfileProUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutProfileProNestedInput
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
-    teams?: OrganizationTeamUpdateManyWithoutMembersNestedInput
+    profile?: ProfileUpdateOneRequiredWithoutProfileProsNestedInput
+    organizations?: OrganizationUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProfileProUncheckedUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teams?: OrganizationTeamUncheckedUpdateManyWithoutMembersNestedInput
+    organizations?: OrganizationUncheckedUpdateManyWithoutProfileProsNestedInput
+    organizationsOwned?: OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProfileProUncheckedUpdateManyWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

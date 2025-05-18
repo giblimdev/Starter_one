@@ -6,8 +6,7 @@ import { getSessionCookie } from "better-auth/cookies";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request, {});
-  console.log("Middleware - Session Cookie Value:", sessionCookie); ///////////////////////////
-
+  console.log("Session Cookie:", sessionCookie);
   const { pathname } = request.nextUrl;
 
   if (!sessionCookie) {
@@ -22,3 +21,4 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/user/:path*", "/admin/:path*", "/dev/:path*"],
 };
+/* get session retourne t il role ?*/

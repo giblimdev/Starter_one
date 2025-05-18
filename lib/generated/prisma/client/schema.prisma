@@ -95,25 +95,28 @@ model Profile {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
-  userId     String       @unique
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ProfilePro ProfilePro[]
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profilePros ProfilePro[]
 
   @@map("profiles")
 }
 
 model ProfilePro {
-  id             String   @id @default(uuid())
-  profileId      String   @unique
-  organizationId String
-  updatedAt      DateTime @updatedAt
+  id        String   @id @default(uuid())
+  profileId String
+  updatedAt DateTime @updatedAt
 
-  profile      Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  teams        OrganizationTeam[] @relation("TeamMembers")
-  projects     Project[]          @relation("ProjectMembers")
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@unique([profileId, organizationId])
+  // M:N avec Organization (membre de plusieurs organisations)
+  organizations Organization[] @relation("OrganizationMembers")
+
+  // Un pro peut être owner de plusieurs orgs
+  organizationsOwned Organization[] @relation("OrganizationOwner")
+
+  projects Project[] @relation("ProjectMembers")
+
   @@map("profile_pros")
 }
 
@@ -121,29 +124,19 @@ model Organization {
   id        String   @id @default(uuid())
   name      String
   slug      String   @unique
+  ownerId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  members  ProfilePro[]
-  teams    OrganizationTeam[]
+  // M:N membres
+  profilePros ProfilePro[] @relation("OrganizationMembers")
+
+  // owner unique
+  owner ProfilePro @relation("OrganizationOwner", fields: [ownerId], references: [id])
+
   projects Project[]
 
   @@map("organizations")
-}
-
-model OrganizationTeam {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  members        ProfilePro[] @relation("TeamMembers")
-
-  @@map("teams")
 }
 
 model Project {
@@ -156,9 +149,10 @@ model Project {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  members        ProfilePro[] @relation("ProjectMembers")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  members ProfilePro[] @relation("ProjectMembers")
 
   @@index([name])
   @@map("projects")

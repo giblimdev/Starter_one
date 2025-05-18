@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Edit, UserPlus } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import PersoProfileCrud from "./PersoProfileCrud";
@@ -36,16 +35,16 @@ export default function PersoProfile() {
           const data: Profile = await res.json();
           setProfile(data);
         } else if (res.status === 401) {
-          toast.info("Veuillez vous connecter.");
+          toast.info("Please sign in.");
           router.push("/auth/sign-in");
         } else if (res.status === 404) {
-          setProfile(null); // Aucun profil trouvé
+          setProfile(null); // No profile found
         } else {
-          toast.error("Erreur lors du chargement du profil.");
+          toast.error("Error loading profile.");
         }
       } catch (error) {
-        console.error("Erreur réseau:", error);
-        toast.error("Erreur réseau. Veuillez vérifier votre connexion.");
+        console.error("Network error:", error);
+        toast.error("Network error. Please check your connection.");
       } finally {
         setLoading(false);
       }
@@ -66,7 +65,7 @@ export default function PersoProfile() {
           setProfile(data);
         }
       } catch (error) {
-        console.error("Erreur lors du rechargement:", error);
+        console.error("Error reloading:", error);
       }
     };
     fetchProfile();
@@ -74,35 +73,29 @@ export default function PersoProfile() {
 
   if (loading) {
     return (
-      <div className="max-w-md mx-auto p-6 space-y-4">
-        {[...Array(4)].map((_, i) => (
-          <Skeleton key={i} className="h-6 w-full rounded-md" />
-        ))}
+      <div className="h-full flex items-center justify-center">
+        <div className="space-y-4 w-full">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-6 w-full rounded-md" />
+          ))}
+        </div>
       </div>
     );
   }
 
   if (!profile && !showCreate) {
     return (
-      <div className="max-w-md mx-auto p-6">
-        <Card className="shadow-lg border-0">
-          <CardContent className="text-center space-y-4 pt-6">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Aucun profil trouvé
-            </h2>
-            <p className="text-gray-500">
-              Vous n&apos;avez pas encore créé de profil. Créez-en un pour
-              personnaliser votre expérience.
-            </p>
-            <Button
-              onClick={() => setShowCreate(true)}
-              className="w-full bg-blue-600 hover:bg-blue-700"
-            >
-              <UserPlus className="mr-2 h-4 w-4" />
-              Créer un profil
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="h-full flex items-center justify-center text-center text-gray-500">
+        <div className="space-y-4 w-full">
+          <p>No personal profile found.</p>
+          <Button
+            onClick={() => setShowCreate(true)}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-sm"
+          >
+            <UserPlus className="mr-2 h-3 w-3" />
+            Create Profile
+          </Button>
+        </div>
       </div>
     );
   }
@@ -128,59 +121,58 @@ export default function PersoProfile() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-4">
-      <Card className="shadow-lg border-0">
-        <CardContent className="space-y-6 pt-6">
-          <div className="space-y-2 text-gray-700">
-            <div>
-              <strong>Prénom :</strong> {profile?.firstName || "n/c"}
-            </div>
-            <div>
-              <strong>Nom :</strong> {profile?.lastName || "n/c"}
-            </div>
-            <div>
-              <strong>Date de naissance :</strong>{" "}
-              {profile?.dateOfBirth
-                ? new Date(profile.dateOfBirth).toLocaleDateString("fr-FR", {
-                    dateStyle: "medium",
-                  })
-                : "n/c"}
-            </div>
-            <div>
-              <strong>Langue préférée :</strong>{" "}
-              {profile?.languagePreferred || "n/c"}
-            </div>
-            <div>
-              <strong>Créé le :</strong>{" "}
-              {profile
-                ? new Date(profile.createdAt).toLocaleString("fr-FR", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })
-                : "n/c"}
-            </div>
-            <div>
-              <strong>Mis à jour le :</strong>{" "}
-              {profile
-                ? new Date(profile.updatedAt).toLocaleString("fr-FR", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })
-                : "n/c"}
-            </div>
+    <div className="h-full flex flex-col">
+      <div className="flex-grow">
+        <div className="space-y-2 text-sm text-gray-700">
+          <div>
+            <strong>First Name:</strong> {profile?.firstName || "N/A"}
           </div>
-          <div className="pt-4">
-            <Button
-              onClick={() => setShowEdit(true)}
-              className="w-full bg-blue-600 hover:bg-blue-700"
-              disabled={showEdit}
-            >
-              <Edit className="mr-2 h-4 w-4" />
-              Éditer le profil
-            </Button>
+          <div>
+            <strong>Last Name:</strong> {profile?.lastName || "N/A"}
           </div>
-        </CardContent>
-      </Card>
+          <div>
+            <strong>Date of Birth:</strong>{" "}
+            {profile?.dateOfBirth
+              ? new Date(profile.dateOfBirth).toLocaleDateString("en-US", {
+                  dateStyle: "medium",
+                })
+              : "N/A"}
+          </div>
+          <div>
+            <strong>Preferred Language:</strong>{" "}
+            {profile?.languagePreferred || "N/A"}
+          </div>
+          <div>
+            <strong>Last Updated:</strong>{" "}
+            {profile?.updatedAt
+              ? new Date(profile.updatedAt).toLocaleString("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : "N/A"}
+          </div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <Button
+          onClick={() => setShowEdit(true)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-sm"
+          disabled={showEdit}
+        >
+          <Edit className="mr-2 h-3 w-3" />
+          Edit Profile
+        </Button>
+      </div>
+
+      {showEdit && (
+        <div className="mt-4 transition-opacity duration-300">
+          <PersoProfileCrud
+            profile={profile}
+            onClose={handleEditClose}
+            isCreating={false}
+          />
+        </div>
+      )}
     </div>
   );
 }

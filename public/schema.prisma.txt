@@ -1,103 +1,91 @@
 generator client {
-  provider = "prisma-client-js" // Spécifie le générateur de client Prisma
-  output   = "../lib/generated/prisma/client" // Chemin de sortie pour le client généré
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma/client"
 }
 
 datasource db {
-  provider = "sqlite" // Fournisseur de la base de données (SQLite)
-  url      = env("DATABASE_URL") // URL de connexion à la base, tirée des variables d'environnement
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
-  USER // Utilisateur standard avec droits limités
-  READER // Utilisateur avec droits de lecture uniquement
-  AUTHOR // Utilisateur pouvant créer du contenu
-  DEV // Développeur avec droits techniques
-  ADMIN // Administrateur avec tous les droits
-}
-
-enum Status {
-  TODO // Tâche/projet/sprint à faire
-  IN_PROGRESS // Tâche/projet/sprint en cours
-  REVIEW // Tâche/projet/sprint en revue
-  DONE // Tâche/projet/sprint terminé
-  BLOCKED // Tâche/projet/sprint bloqué
-  CANCELLED // Tâche/projet/sprint annulé
+  USER
+  READER
+  AUTHOR
+  DEV
+  ADMIN
 }
 
 model User {
-  id            String   @id @default(uuid()) // Identifiant unique de l'utilisateur
-  name          String? // Nom de l'utilisateur (optionnel)
-  email         String?  @unique // Email unique de l'utilisateur (optionnel)
-  emailVerified Boolean  @default(false) // Indique si l'email est vérifié
-  image         String? // URL de l'image de profil (optionnel)
-  role          Role     @default(USER) // Rôle de l'utilisateur dans l'application
-  lang          String?  @default("en") // Langue préférée de l'utilisateur
-  createdAt     DateTime @default(now()) // Date de création du compte
-  updatedAt     DateTime @updatedAt // Date de dernière mise à jour du compte
+  id            String   @id @default(uuid())
+  name          String?
+  email         String?  @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          Role     @default(USER)
+  lang          String?  @default("en")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  sessions      Session[] // Sessions actives de l'utilisateur
-  accounts      Account[] // Comptes d'authentification liés
-  verifications Verification[] // Vérifications associées à l'utilisateur
-  Profile       Profile[]
+  sessions      Session[]
+  accounts      Account[]
+  verifications Verification[]
+  profile       Profile?
+  profileId     String?
 
-  @@index([email]) // Index sur l'email pour des recherches rapides
-  @@map("user") // Nom de la table dans la base de données
+  @@index([email])
+  @@map("user")
 }
 
 model Session {
-  id        String   @id @default(uuid()) // Identifiant unique de la session
-  userId    String // ID de l'utilisateur associé
-  token     String   @unique // Jeton unique de la session
-  expiresAt DateTime // Date d'expiration de la session
-  ipAddress String? // Adresse IP de connexion (optionnel)
-  userAgent String? // Agent utilisateur du navigateur (optionnel)
-  createdAt DateTime @default(now()) // Date de création de la session
-  updatedAt DateTime @updatedAt // Date de dernière mise à jour de la session
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation avec l'utilisateur, suppression en cascade
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("session") // Nom de la table dans la base de données
+  @@map("session")
 }
 
 model Account {
-  id                    String    @id @default(uuid()) // Identifiant unique du compte
-  userId                String // ID de l'utilisateur associé
-  accountId             String // ID du compte chez le fournisseur
-  providerId            String // Identifiant du fournisseur (ex. Google, GitHub)
-  accessToken           String? // Jeton d'accès OAuth (optionnel)
-  refreshToken          String? // Jeton de rafraîchissement OAuth (optionnel)
-  accessTokenExpiresAt  DateTime? // Date d'expiration du jeton d'accès
-  refreshTokenExpiresAt DateTime? // Date d'expiration du jeton de rafraîchissement
-  scope                 String? // Portée des autorisations OAuth
-  idToken               String? // Jeton d'identité OAuth
-  password              String? // Mot de passe haché (pour authentification locale)
-  createdAt             DateTime  @default(now()) // Date de création du compte
-  updatedAt             DateTime  @updatedAt // Date de dernière mise à jour du compte
+  id                    String    @id @default(uuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation avec l'utilisateur, suppression en cascade
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("account") // Nom de la table dans la base de données
+  @@map("account")
 }
 
 model Verification {
-  id         String   @id @default(uuid()) // Identifiant unique de la vérification
-  identifier String // Identifiant à vérifier (ex. email)
-  value      String // Valeur de vérification (ex. token)
-  expiresAt  DateTime // Date d'expiration du token
-  createdAt  DateTime @default(now()) // Date de création de la vérification
-  updatedAt  DateTime @updatedAt // Date de dernière mise à jour de la vérification
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Utilisateur associé
-  userId String // ID de l'utilisateur
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
-  @@map("verification") // Nom de la table dans la base de données
+  @@map("verification")
 }
 
-//
-// ============================
-// 2. Onboarding utilisateur
-// ============================
 model Profile {
   id                String    @id @default(uuid())
   firstName         String
@@ -107,26 +95,28 @@ model Profile {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
-  userId     String       @unique
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ProfilePro ProfilePro[]
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profilePros ProfilePro[]
 
   @@map("profiles")
 }
 
 model ProfilePro {
-  id             String   @id @default(uuid())
-  profileId      String   @unique
-  organizationId String
-  updatedAt      DateTime @updatedAt
+  id        String   @id @default(uuid())
+  profileId String
+  updatedAt DateTime @updatedAt
 
-  // Relations
-  profile      Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  teams        OrganizationTeam[] @relation("TeamMembers")
-  projects     Project[]          @relation("ProjectMembers")
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@unique([profileId, organizationId])
+  // M:N avec Organization (membre de plusieurs organisations)
+  organizations Organization[] @relation("OrganizationMembers")
+
+  // Un pro peut être owner de plusieurs orgs
+  organizationsOwned Organization[] @relation("OrganizationOwner")
+
+  projects Project[] @relation("ProjectMembers")
+
   @@map("profile_pros")
 }
 
@@ -134,35 +124,20 @@ model Organization {
   id        String   @id @default(uuid())
   name      String
   slug      String   @unique
+  ownerId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  members  ProfilePro[]
-  teams    OrganizationTeam[]
+  // M:N membres
+  profilePros ProfilePro[] @relation("OrganizationMembers")
+
+  // owner unique
+  owner ProfilePro @relation("OrganizationOwner", fields: [ownerId], references: [id])
+
   projects Project[]
 
   @@map("organizations")
 }
-
-model OrganizationTeam {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  members        ProfilePro[] @relation("TeamMembers")
-
-  @@map("teams")
-}
-
-//
-// ============================
-// 3. Métier
-// ============================
 
 model Project {
   id          String    @id @default(uuid())
@@ -174,9 +149,10 @@ model Project {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  members        ProfilePro[] @relation("ProjectMembers")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  members ProfilePro[] @relation("ProjectMembers")
 
   @@index([name])
   @@map("projects")

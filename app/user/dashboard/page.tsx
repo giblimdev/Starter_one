@@ -1,374 +1,156 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth/auth-client";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Briefcase, CheckCircle, Activity, Clock } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Progress } from "@/components/ui/progress";
-
-type UserAggregate = {
-  id: string;
-  userName?: string;
-  userEmail?: string;
-  userImage?: string;
-  userRole?: string;
-  userLang?: string;
-  userCreatedAt: string;
-  userUpdatedAt: string;
-  memberProjects?: string;
-  projects?: string;
-  tasks?: string;
-  comments?: string;
-  activities?: string;
-  timeLogs?: string;
-  epics?: string;
-  userStories?: string;
-  sprints?: string;
-  themas?: string;
-  sessions?: string;
-  accounts?: string;
-};
-
-type Project = {
-  id: string;
-  name: string;
-  description?: string;
-  status: string;
-  createdAt: string;
-};
-
-type Task = {
-  id: string;
-  title: string;
-  description?: string;
-  status: string;
-  priority?: string;
-  createdAt: string;
-  dueDate?: string;
-};
-
-type TimeLog = {
-  id: string;
-  startTime: string;
-  endTime?: string;
-  duration?: number;
-  createdAt: string;
-};
-
-type Activity = {
-  id: string;
-  action: string;
-  entityId: string;
-  timestamp: string;
-};
+import { Button } from "@/components/ui/button";
+import ProProfile from "@/components/profile/ProProfile";
+import OrgaCreate from "@/components/organization/OrgaCreate";
+import { useProfessional } from "@/hooks/useProfessional";
+import ProjectCreate from "@/components/project/ProjectCreate";
+import { getOrganizations, Organization } from "@/utils/getOrganizations";
 
 export default function DashboardPage() {
-  const { data: session } = useSession();
-  const [user, setUser] = useState<UserAggregate | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
+  const { userId, profileProId, loading, error, fetchProfilePro } =
+    useProfessional();
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [isOrgaCreateOpen, setIsOrgaCreateOpen] = useState(false);
+  const [isProjectCreateOpen, setIsProjectCreateOpen] = useState(false);
+  const [isFetchingOrgs, setIsFetchingOrgs] = useState(false);
 
+  // Fetch organizations for ProjectCreate
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!session?.user?.id) {
-        console.log("No user ID in session");
-        setLoading(false);
-        return;
+    async function fetchOrgs() {
+      if (!session || !profileProId) return;
+
+      setIsFetchingOrgs(true);
+      const orgs = await getOrganizations();
+      if (orgs) {
+        setOrganizations(orgs);
       }
+      setIsFetchingOrgs(false);
+    }
 
-      try {
-        console.log("Fetching data for user ID:", session.user.id);
-        const res = await fetch(`/api/user/dashboard/${session.user.id}`);
-        if (!res.ok) {
-          throw new Error(`HTTP error ${res.status}`);
-        }
-        const data = await res.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchOrgs();
+  }, [session, profileProId]);
 
-    fetchUserData();
-  }, [session]);
+  // Handle authentication and profile fetching
+  useEffect(() => {
+    if (isPending) return;
+    if (!session) {
+      toast.info("Please sign in.");
+      router.push("/auth/sign-in");
+      return;
+    }
+    fetchProfilePro();
+  }, [session, isPending, router, fetchProfilePro]);
 
-  if (loading) return <DashboardSkeleton />;
-  if (!user)
+  // Handle errors
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const refreshOrganizations = async () => {
+    if (!session || !profileProId) return;
+
+    setIsFetchingOrgs(true);
+    const orgs = await getOrganizations();
+    if (orgs) {
+      setOrganizations(orgs);
+    }
+    setIsFetchingOrgs(false);
+  };
+
+  const handleOrgaSuccess = () => {
+    setIsOrgaCreateOpen(false);
+    refreshOrganizations();
+  };
+
+  const handleProjectSuccess = () => {
+    setIsProjectCreateOpen(false);
+    // Optionally refresh projects here if you have a project list
+  };
+
+  if (isPending || loading || isFetchingOrgs) {
     return (
-      <div className="container mx-auto py-8 text-center text-red-600">
-        User not found
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        <Skeleton className="h-12 w-1/2" />
+        {[...Array(2)].map((_, i) => (
+          <Skeleton key={i} className="h-32 w-full" />
+        ))}
       </div>
     );
+  }
 
-  const projects: Project[] = user.projects ? JSON.parse(user.projects) : [];
-  const tasks: Task[] = user.tasks ? JSON.parse(user.tasks) : [];
-  const timeLogs: TimeLog[] = user.timeLogs ? JSON.parse(user.timeLogs) : [];
-  const activities: Activity[] = user.activities
-    ? JSON.parse(user.activities)
-    : [];
-
-  const totalTimeLogged =
-    timeLogs.reduce((sum, log) => sum + (log.duration || 0), 0) / 3600;
-  const completedTasks = tasks.filter((t) => t.status === "COMPLETED").length;
+  if (!session) {
+    return null; // Redirection handled in useEffect
+  }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      <div className="flex items-center gap-4">
-        {user.userImage ? (
-          <Image
-            src={user.userImage}
-            alt={user.userName || "User"}
-            width={64}
-            height={64}
-            className="rounded-full border-2 border-white shadow-md"
-          />
-        ) : (
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
-            {user.userName?.charAt(0).toUpperCase() || "U"}
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold text-gray-900">
+        Welcome, {session.user?.name?.trim() || "User"}!
+      </h1>
+
+      <Card className="shadow-lg border-0">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-gray-700">
+            Dashboard
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="text-gray-700">
+            <p>
+              <strong>User ID:</strong> {userId || "N/A"}
+            </p>
+            <p>
+              <strong>Professional Profile ID:</strong> {profileProId || "N/A"}
+            </p>
           </div>
-        )}
-        <div>
-          <h1 className="text-3xl font-bold">{user.userName || "User"}</h1>
-          <p className="text-muted-foreground capitalize">
-            {user.userRole?.toLowerCase() || "member"}
-          </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard
-          icon={<Briefcase />}
-          value={projects.length}
-          label="Projects"
-        />
-        <StatCard
-          icon={<CheckCircle />}
-          value={completedTasks}
-          label="Completed Tasks"
-        />
-        <StatCard
-          icon={<Clock />}
-          value={`${totalTimeLogged.toFixed(1)}h`}
-          label="Time Logged"
-        />
-      </div>
-
-      <Tabs defaultValue="projects" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="tasks">Tasks</TabsTrigger>
-          <TabsTrigger value="timeLogs">Time Logs</TabsTrigger>
-          <TabsTrigger value="activities">Activity</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="projects">
-          <Card>
-            <CardHeader>
-              <CardTitle>Projects</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {projects.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Created</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {projects.map((project) => (
-                      <TableRow key={project.id}>
-                        <TableCell>{project.name}</TableCell>
-                        <TableCell>{project.status}</TableCell>
-                        <TableCell>
-                          {new Date(project.createdAt).toLocaleDateString(
-                            "en-US"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">No projects found.</p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="tasks">
-          <Card>
-            <CardHeader>
-              <CardTitle>Tasks</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {tasks.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead>Progress</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {tasks.map((task) => (
-                      <TableRow key={task.id}>
-                        <TableCell>{task.title}</TableCell>
-                        <TableCell>{task.status}</TableCell>
-                        <TableCell>{task.priority || "Unspecified"}</TableCell>
-                        <TableCell>
-                          {task.dueDate
-                            ? new Date(task.dueDate).toLocaleDateString("en-US")
-                            : "None"}
-                        </TableCell>
-                        <TableCell>
-                          <Progress
-                            value={
-                              task.status === "COMPLETED"
-                                ? 100
-                                : task.status === "IN_PROGRESS"
-                                  ? 50
-                                  : 0
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">No tasks found.</p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="timeLogs">
-          <Card>
-            <CardHeader>
-              <CardTitle>Time Logs</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {timeLogs.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Start</TableHead>
-                      <TableHead>End</TableHead>
-                      <TableHead>Duration (hours)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {timeLogs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell>
-                          {new Date(log.startTime).toLocaleString("en-US")}
-                        </TableCell>
-                        <TableCell>
-                          {log.endTime
-                            ? new Date(log.endTime).toLocaleString("en-US")
-                            : "Ongoing"}
-                        </TableCell>
-                        <TableCell>
-                          {log.duration
-                            ? (log.duration / 3600).toFixed(1)
-                            : "N/A"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">No time logs found.</p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="activities">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {activities.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {activities.map((activity) => (
-                      <TableRow key={activity.id}>
-                        <TableCell>{activity.action}</TableCell>
-                        <TableCell>
-                          {new Date(activity.timestamp).toLocaleString("en-US")}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">No activities found.</p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-}
-
-function StatCard({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: number | string;
-  label: string;
-}) {
-  return (
-    <Card>
-      <CardContent className="p-4 flex items-center gap-4">
-        <div className="text-primary">{icon}</div>
-        <div>
-          <p className="text-2xl font-bold">{value}</p>
-          <p className="text-sm text-muted-foreground">{label}</p>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function DashboardSkeleton() {
-  return (
-    <div className="container mx-auto py-8 space-y-8">
-      <Skeleton className="h-16 w-64" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-      </div>
-      <Skeleton className="h-96 w-full" />
+      <Card className="shadow-lg border-0">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold text-gray-700">
+            Professional Profile
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <ProProfile />
+          <div className="flex space-x-4">
+            <Button onClick={() => setIsOrgaCreateOpen(true)}>
+              Create Organization
+            </Button>
+            <Button
+              onClick={() => setIsProjectCreateOpen(true)}
+              disabled={organizations.length === 0}
+            >
+              Create Project
+            </Button>
+          </div>
+          {isOrgaCreateOpen && (
+            <OrgaCreate
+              onClose={() => setIsOrgaCreateOpen(false)}
+              onSuccess={handleOrgaSuccess}
+            />
+          )}
+          {isProjectCreateOpen && (
+            <ProjectCreate
+              onClose={() => setIsProjectCreateOpen(false)}
+              onSuccess={handleProjectSuccess}
+              organizations={organizations}
+            />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

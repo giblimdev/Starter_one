@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -83,8 +84,8 @@ export default function SignUp() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <Card className=" rounded-md rounded-t-none max-w-md w-full p-0">
-        <CardHeader className="p-2 bg-gradient-to-r from-pink-400 to-blue-500 text-white rounded-t-md">
+      <Card className=" rounded-md rounded-t-none max-w-md w-full p-0 pb-4">
+        <CardHeader className="p-3 bg-gradient-to-r from-pink-400 to-blue-500 text-white rounded-t-md">
           <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
           <CardDescription className="text-xs md:text-sm text-white/90">
             Enter your information to create an account
@@ -200,12 +201,13 @@ export default function SignUp() {
           </div>
         </CardContent>
 
-        <CardFooter>
-          <div className="flex justify-center w-full border-t py-4">
-            <p className="text-center text-xs text-neutral-500">
-              Secured by <span className="text-orange-400">better-auth</span>.
-            </p>
-          </div>
+        <CardFooter className="text-center text-sm m-2 block">
+          {" "}
+          {/* Use block to center */}
+          Allready have an account ?{" "}
+          <Link href="/auth/sign-in" className="underline">
+            &nbsp;Sign up
+          </Link>
         </CardFooter>
       </Card>
     </div>

@@ -1,5 +1,3 @@
-//@/components/profile/PersoProfileCrud.tsx
-
 "use client";
 
 import React, { useState } from "react";
@@ -70,14 +68,14 @@ export default function PersoProfileCrud({
       if (res.ok) {
         toast.success(
           isCreating
-            ? "Profil créé avec succès !"
-            : "Profil mis à jour avec succès !"
+            ? "Profile created successfully!"
+            : "Profile updated successfully!"
         );
         onClose();
       } else if (res.status === 400) {
         const { errors } = await res.json();
         toast.error(
-          "Données invalides : " +
+          "Invalid data: " +
             errors
               ?.map((e: unknown) =>
                 typeof e === "object" && e !== null && "message" in e
@@ -87,20 +85,18 @@ export default function PersoProfileCrud({
               .join(", ")
         );
       } else if (res.status === 401) {
-        toast.error("Veuillez vous connecter.");
+        toast.error("Please sign in.");
         router.push("/auth/sign-in");
       } else if (res.status === 409) {
-        toast.error("Un profil existe déjà.");
+        toast.error("A profile already exists.");
       } else {
         toast.error(
-          isCreating
-            ? "Erreur lors de la création du profil."
-            : "Erreur lors de la mise à jour du profil."
+          isCreating ? "Error creating profile." : "Error updating profile."
         );
       }
     } catch (error) {
-      console.error("Erreur réseau:", error);
-      toast.error("Erreur réseau. Veuillez réessayer.");
+      console.error("Network error:", error);
+      toast.error("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -109,7 +105,7 @@ export default function PersoProfileCrud({
   const handleDelete = async () => {
     if (
       !confirm(
-        "Êtes-vous sûr de vouloir supprimer votre profil ? Cette action est irréversible."
+        "Are you sure you want to delete your profile? This action is irreversible."
       )
     ) {
       return;
@@ -122,17 +118,17 @@ export default function PersoProfileCrud({
       });
 
       if (res.ok) {
-        toast.success("Profil supprimé avec succès.");
+        toast.success("Profile deleted successfully.");
         onClose();
       } else if (res.status === 401) {
-        toast.error("Veuillez vous connecter.");
+        toast.error("Please sign in.");
         router.push("/auth/sign-in");
       } else {
-        toast.error("Erreur lors de la suppression du profil.");
+        toast.error("Error deleting profile.");
       }
     } catch (error) {
-      console.error("Erreur réseau:", error);
-      toast.error("Erreur réseau. Veuillez réessayer.");
+      console.error("Network error:", error);
+      toast.error("Network error. Please try again.");
     }
   };
 
@@ -149,54 +145,54 @@ export default function PersoProfileCrud({
       </Button>
       <CardHeader>
         <CardTitle className="text-xl font-semibold">
-          {isCreating ? "Créer un profil" : "Modifier le profil"}
+          {isCreating ? "Create Profile" : "Edit Profile"}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="firstName">Prénom</Label>
+            <Label htmlFor="firstName">First Name</Label>
             <Input
               id="firstName"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              placeholder="Votre prénom"
+              placeholder="Your first name"
               required
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="lastName">Nom</Label>
+            <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              placeholder="Votre nom de famille"
+              placeholder="Your last name"
               required
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="dateOfBirth">Date de naissance (optionnel)</Label>
+            <Label htmlFor="dateOfBirth">Date of Birth (optional)</Label>
             <Input
               id="dateOfBirth"
               name="dateOfBirth"
               type="date"
               value={formData.dateOfBirth}
               onChange={handleChange}
-              placeholder="Votre date de naissance"
+              placeholder="Your date of birth"
             />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="languagePreferred">
-              Langue préférée (optionnel)
+              Preferred Language (optional)
             </Label>
             <Input
               id="languagePreferred"
               name="languagePreferred"
               value={formData.languagePreferred}
               onChange={handleChange}
-              placeholder="ex: fr, en"
+              placeholder="e.g., en, fr"
             />
           </div>
           <div className="mt-4 space-y-2">
@@ -208,7 +204,7 @@ export default function PersoProfileCrud({
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={18} />
               ) : (
-                "Enregistrer"
+                "Save"
               )}
             </Button>
             <Button
@@ -218,7 +214,7 @@ export default function PersoProfileCrud({
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Annuler
+              Cancel
             </Button>
           </div>
         </form>
@@ -230,7 +226,7 @@ export default function PersoProfileCrud({
               onClick={handleDelete}
               disabled={isSubmitting}
             >
-              Supprimer mon profil
+              Delete My Profile
             </Button>
           </div>
         )}

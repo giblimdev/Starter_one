@@ -78,7 +78,7 @@ export default function UserProfileCrud({
           : formData.image,
       };
 
-      const res = await fetch("/api/user/userProfil", {
+      const res = await fetch("/api/user/profile/userProfil", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -86,12 +86,12 @@ export default function UserProfileCrud({
       });
 
       if (res.ok) {
-        toast.success("Profil mis à jour avec succès !");
+        toast.success("Profile updated successfully!");
         onClose();
       } else if (res.status === 400) {
         const { errors } = await res.json();
         toast.error(
-          "Données invalides : " +
+          "Invalid data: " +
             errors
               ?.map((e: unknown) =>
                 typeof e === "object" && e !== null && "message" in e
@@ -101,13 +101,13 @@ export default function UserProfileCrud({
               .join(", ")
         );
       } else if (res.status === 403) {
-        toast.error("Non autorisé à modifier certaines informations.");
+        toast.error("Not authorized to modify some information.");
       } else {
-        toast.error("Erreur lors de la mise à jour du profil.");
+        toast.error("Error updating profile.");
       }
     } catch (error) {
-      console.error("Erreur réseau:", error);
-      toast.error("Erreur réseau. Veuillez réessayer.");
+      console.error("Network error:", error);
+      toast.error("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -116,146 +116,146 @@ export default function UserProfileCrud({
   const handleDelete = async () => {
     if (
       !confirm(
-        "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+        "Are you sure you want to delete your account? This action is irreversible."
       )
     ) {
       return;
     }
 
     try {
-      const res = await fetch("/api/user/userProfil", {
+      const res = await fetch("/api/user/profile/userProfil", {
         method: "DELETE",
         credentials: "include",
       });
 
       if (res.ok) {
-        toast.success("Compte supprimé avec succès.");
+        toast.success("Account deleted successfully.");
         router.push("/auth/sign-in");
       } else {
-        toast.error("Erreur lors de la suppression du compte.");
+        toast.error("Error deleting account.");
       }
     } catch (error) {
-      console.error("Erreur réseau:", error);
-      toast.error("Erreur réseau. Veuillez réessayer.");
+      console.error("Network error:", error);
+      toast.error("Network error. Please try again.");
     }
   };
 
   return (
-    <Card className="relative max-w-md mx-auto shadow-lg border-0">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-        onClick={onClose}
-      >
-        <X size={20} />
-      </Button>
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold">
-          Modifier le profil
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Nom</Label>
-            <Input
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Votre nom"
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Votre email"
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="image">Image de profil (optionnel)</Label>
-            <div className="flex items-end gap-4">
-              {imagePreview && (
-                <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                  <Image
-                    src={imagePreview}
-                    alt="Aperçu de l'image de profil"
-                    fill
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-              )}
-              <div className="flex items-center gap-2 w-full">
-                <Input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full"
-                />
+    <div className="max-w-xl mx-auto p-6 space-y-4">
+      <Card className="relative max-w-md mx-auto shadow-lg border-0">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+          onClick={onClose}
+        >
+          <X size={20} />
+        </Button>
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">Edit Profile</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Your email"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="image">Profile Picture (optional)</Label>
+              <div className="flex items-end gap-4">
                 {imagePreview && (
-                  <X
-                    className="cursor-pointer text-gray-500 hover:text-gray-700"
-                    size={18}
-                    onClick={clearImage}
-                  />
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                    <Image
+                      src={imagePreview}
+                      alt="Profile picture preview"
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                 )}
+                <div className="flex items-center gap-2 w-full">
+                  <Input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full"
+                  />
+                  {imagePreview && (
+                    <X
+                      className="cursor-pointer text-gray-500 hover:text-gray-700"
+                      size={18}
+                      onClick={clearImage}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="lang">Langue</Label>
-            <Input
-              id="lang"
-              name="lang"
-              value={formData.lang}
-              onChange={handleChange}
-              placeholder="ex: fr, en"
-            />
-          </div>
-          <div className="mt-4 space-y-2">
+            <div className="grid gap-2">
+              <Label htmlFor="lang">Language</Label>
+              <Input
+                id="lang"
+                name="lang"
+                value={formData.lang}
+                onChange={handleChange}
+                placeholder="e.g., en, fr"
+              />
+            </div>
+            <div className="mt-4 space-y-2">
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin" size={18} />
+                ) : (
+                  "Save"
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full text-gray-500 hover:text-gray-700"
+                onClick={onClose}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+          <div className="mt-6 border-t pt-4">
             <Button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              variant="destructive"
+              className="w-full"
+              onClick={handleDelete}
               disabled={isSubmitting}
             >
-              {isSubmitting ? (
-                <Loader2 className="animate-spin" size={18} />
-              ) : (
-                "Enregistrer"
-              )}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="w-full text-gray-500 hover:text-gray-700"
-              onClick={onClose}
-              disabled={isSubmitting}
-            >
-              Annuler
+              Delete My Account
             </Button>
           </div>
-        </form>
-        <div className="mt-6 border-t pt-4">
-          <Button
-            variant="destructive"
-            className="w-full"
-            onClick={handleDelete}
-            disabled={isSubmitting}
-          >
-            Supprimer mon compte
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

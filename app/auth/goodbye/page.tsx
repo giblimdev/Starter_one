@@ -1,17 +1,22 @@
-// app/auth/goodbye/page.tsx
+// @/app/auth/goodbye/page.tsx
 "use client";
 
+import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useProfessional } from "@/hooks/useProfessional";
 import { Button } from "@/components/ui/button";
 import { RocketIcon } from "lucide-react";
 
 export default function GoodbyePage() {
   const router = useRouter();
+  const { reset } = useProfessional();
+
+  useEffect(() => {
+    reset(); // Vider le store useProfessional au chargement
+  }, [reset]);
 
   const handleReconnect = () => {
     router.push("/auth/sign-in");
-
-    window.location.href = "/auth/sign-in";
   };
 
   const searchParams = useSearchParams();

@@ -11,7 +11,8 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: "/public/features", label: "Features" },
   { href: "/user/newProject", label: "New Project" },
-  { href: "/dev", label: "Dev Home" },
+  { href: "/dev", label: "DevPage" },
+  { href: "/admin", label: "Admin" },
 ];
 
 function NavHeader() {

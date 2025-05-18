@@ -1,13 +1,14 @@
-//@/app/api/user/profile/persoProfil.ts
+//@/app/api/user/profile/persoProfil
+
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/auth/auth-server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-// Schéma de validation pour la création et la mise à jour du profil
+// Schema for profile creation and update
 const profileSchema = z.object({
-  firstName: z.string().min(1, "Le prénom est requis").max(100),
-  lastName: z.string().min(1, "Le nom de famille est requis").max(100),
+  firstName: z.string().max(100).optional().default(""),
+  lastName: z.string().max(100).optional().default(""),
   dateOfBirth: z.string().datetime().optional().nullable(),
   languagePreferred: z.string().min(2).max(5).default("en"),
 });
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
     const userId = await getServerSession(request);
     if (!userId) {
       return NextResponse.json(
-        { message: "Utilisateur non authentifié" },
+        { message: "User not authenticated" },
         { status: 401 }
       );
     }
@@ -37,15 +38,15 @@ export async function GET(request: NextRequest) {
 
     if (!profile) {
       return NextResponse.json(
-        { message: "Profil non trouvé" },
+        { message: "Profile not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(profile);
   } catch (error) {
-    console.error("[GET /api/user/profile/persoProfil] Erreur:", error);
-    return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
+    console.error("[GET /api/user/profile/persoProfil] Error:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
 
@@ -54,38 +55,33 @@ export async function POST(request: NextRequest) {
     const userId = await getServerSession(request);
     if (!userId) {
       return NextResponse.json(
-        { message: "Utilisateur non authentifié" },
+        { message: "User not authenticated" },
         { status: 401 }
       );
     }
 
     // Vérifier si l'utilisateur existe
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      return NextResponse.json(
-        { message: "Utilisateur non trouvé" },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // Vérifier si un profil existe déjà
+    // Vérifier si le profil existe déjà
     const existingProfile = await prisma.profile.findUnique({
       where: { userId },
     });
+
+    // Si le profil existe déjà, le retourner au lieu d'erreur 409
     if (existingProfile) {
-      return NextResponse.json(
-        { message: "Un profil existe déjà pour cet utilisateur" },
-        { status: 409 }
-      );
+      return NextResponse.json(existingProfile);
     }
 
+    // Sinon, créer le nouveau profil
     const json = await request.json();
     const validation = profileSchema.safeParse(json);
     if (!validation.success) {
       return NextResponse.json(
-        { message: "Données invalides", errors: validation.error.errors },
+        { message: "Invalid data", errors: validation.error.errors },
         { status: 400 }
       );
     }
@@ -93,7 +89,7 @@ export async function POST(request: NextRequest) {
     const { firstName, lastName, dateOfBirth, languagePreferred } =
       validation.data;
 
-    const profile = await prisma.profile.create({
+    const newProfile = await prisma.profile.create({
       data: {
         firstName,
         lastName,
@@ -112,10 +108,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(profile, { status: 201 });
+    return NextResponse.json(newProfile, { status: 201 });
   } catch (error) {
-    console.error("[POST /api/user/profile/persoProfil] Erreur:", error);
-    return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
+    console.error("[POST /api/user/profile/persoProfil] Error:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
 
@@ -124,7 +120,7 @@ export async function PUT(request: NextRequest) {
     const userId = await getServerSession(request);
     if (!userId) {
       return NextResponse.json(
-        { message: "Utilisateur non authentifié" },
+        { message: "User not authenticated" },
         { status: 401 }
       );
     }
@@ -133,7 +129,7 @@ export async function PUT(request: NextRequest) {
     const validation = profileSchema.safeParse(json);
     if (!validation.success) {
       return NextResponse.json(
-        { message: "Données invalides", errors: validation.error.errors },
+        { message: "Invalid data", errors: validation.error.errors },
         { status: 400 }
       );
     }
@@ -143,7 +139,7 @@ export async function PUT(request: NextRequest) {
     });
     if (!existingProfile) {
       return NextResponse.json(
-        { message: "Profil non trouvé" },
+        { message: "Profile not found" },
         { status: 404 }
       );
     }
@@ -173,8 +169,8 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(updatedProfile);
   } catch (error) {
-    console.error("[PUT /api/user/profile/persoProfil] Erreur:", error);
-    return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
+    console.error("[PUT /api/user/profile/persoProfil] Error:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
 
@@ -183,7 +179,7 @@ export async function DELETE(request: NextRequest) {
     const userId = await getServerSession(request);
     if (!userId) {
       return NextResponse.json(
-        { message: "Utilisateur non authentifié" },
+        { message: "User not authenticated" },
         { status: 401 }
       );
     }
@@ -193,7 +189,7 @@ export async function DELETE(request: NextRequest) {
     });
     if (!existingProfile) {
       return NextResponse.json(
-        { message: "Profil non trouvé" },
+        { message: "Profile not found" },
         { status: 404 }
       );
     }
@@ -202,9 +198,9 @@ export async function DELETE(request: NextRequest) {
       where: { userId },
     });
 
-    return NextResponse.json({ message: "Profil supprimé avec succès" });
+    return NextResponse.json({ message: "Profile deleted successfully" });
   } catch (error) {
-    console.error("[DELETE /api/user/profile/persoProfil] Erreur:", error);
-    return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
+    console.error("[DELETE /api/user/profile/persoProfil] Error:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

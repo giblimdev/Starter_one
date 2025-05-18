@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(user);
   } catch (error) {
-    console.error("[GET /api/user/profile/me] Erreur:", error);
+    console.error("[GET /api/user/profile/] Erreur:", error);
     return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -112,7 +112,7 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(updatedUser);
   } catch (error) {
-    console.error("[PUT /api/user/profile/me] Erreur:", error);
+    console.error("[PUT /api/user/profile/userProfil] Erreur:", error);
     return NextResponse.json({ message: "Erreur serveur" }, { status: 500 });
   }
 }
